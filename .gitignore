@@ -1,0 +1,23 @@
+# Maven
+target/
+
+# Java
+*.class
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/.nb-gradle/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Archivos de configuración local
+.env
+
+src/main/resources/application.properties
