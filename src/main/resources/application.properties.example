@@ -3,7 +3,7 @@ spring.application.name=dfast
 # Conexión a PostgreSQL (Base de datos dfast_db)
 spring.datasource.url=jdbc:postgresql://localhost:5432/dfast_db
 spring.datasource.username=postgres
-spring.datasource.password=contra
+spring.datasource.password=contraseña personal postgres
 
 # Configuración de Hibernate
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
