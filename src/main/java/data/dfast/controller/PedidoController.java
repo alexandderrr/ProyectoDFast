@@ -11,8 +11,7 @@ package data.dfast.controller;
 import data.dfast.dto.PedidoRequestDTO;
 import data.dfast.model.entity.Pedido;
 import data.dfast.model.entity.Usuario;
-import data.dfast.repository.PedidoRepository;
-import data.dfast.repository.UsuarioRepository;
+import data.dfast.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,33 +23,32 @@ import java.util.Optional;
 public class PedidoController {
 
     @Autowired
-    private PedidoRepository pedidoRepository;
-
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private PedidoService pedidoService;
 
     // Crear un nuevo pedido
     @PostMapping
-    public ResponseEntity<?> crearPedido(@RequestBody PedidoRequestDTO request) {
+    public ResponseEntity<?> crearPedido(
+            @RequestBody PedidoRequestDTO request) {
+
         // 1. Verificamos que el cliente exista
-        Optional<Usuario> clienteOpt = usuarioRepository.findById(request.getClienteId());
+        Optional<Usuario> clienteOpt =
+                pedidoService.buscarCliente(request.getClienteId());
 
         if (clienteOpt.isEmpty()) {
-            return ResponseEntity.badRequest().body("Error: El cliente con ID " + request.getClienteId() + " no existe.");
+            return ResponseEntity.badRequest()
+                    .body("Error: El cliente con ID "
+                            + request.getClienteId()
+                            + " no existe.");
         }
 
-        // 2. Construimos el objeto Pedido a partir de los datos del DTO
-        Pedido nuevoPedido = new Pedido();
-        nuevoPedido.setDescripcion(request.getDescripcion());
-        nuevoPedido.setPeso(request.getPeso());
-        nuevoPedido.setDireccionRecogida(request.getDireccionRecogida());
-        nuevoPedido.setDireccionEntrega(request.getDireccionEntrega());
-        nuevoPedido.setCliente(clienteOpt.get()); 
-        // Nota: El estado por defecto ya es "PENDIENTE" y el repartidor queda en null automáticamente.
+        // 2. Creamos el pedido mediante el servicio
+        Pedido guardado =
+                pedidoService.crearPedido(request, clienteOpt.get());
 
-        // 3. Guardamos en la base de datos
-        Pedido guardado = pedidoRepository.save(nuevoPedido);
-
-        return ResponseEntity.ok("Pedido creado exitosamente con ID: " + guardado.getId());
+        // 3. Devolvemos el resultado
+        return ResponseEntity.ok(
+                "Pedido creado exitosamente con ID: "
+                        + guardado.getId()
+        );
     }
 }
