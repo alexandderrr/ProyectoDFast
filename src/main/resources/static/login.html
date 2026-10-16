@@ -170,60 +170,65 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </div>
 
     <script>
-
+        
     document.getElementById("loginForm").addEventListener("submit", async function(event) {
-
         event.preventDefault();
 
-        const correo = document.getElementById("correo").value;
+        const correo = document.getElementById("correo").value.trim();
         const password = document.getElementById("password").value;
-
         const mensaje = document.getElementById("mensaje");
+        const boton = document.querySelector("#loginForm button");
 
-        try {
+        boton.disabled = true;
+        boton.textContent = "Ingresando...";
+        mensaje.textContent = "";
 
-            const respuesta = await fetch("/api/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    correo: correo,
-                    password: password
-                })
-            });
+    try {
+        const respuesta = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                correo: correo,
+                password: password
+            })
+        });
 
-            const resultado = await respuesta.text();
+        if (respuesta.ok) {
+            const resultado = await respuesta.json();
 
-            if (respuesta.ok) {
+            // Guardamos los datos de la sesión
+            sessionStorage.setItem("idUsuario", resultado.id);
+            sessionStorage.setItem("nombreUsuario", resultado.nombre);
+            sessionStorage.setItem("correo", resultado.correo);
+            sessionStorage.setItem("rol", resultado.rol);
 
-             mensaje.style.color = "green";
-             mensaje.textContent = resultado;
-
-                
-            sessionStorage.setItem("correo", correo);
+            mensaje.style.color = "green";
+            mensaje.textContent = "¡Bienvenido, " + resultado.nombre + "!";
 
             setTimeout(function() {
-            window.location.href = "home.html";
-            }, 1000);
+                window.location.href = "home.html";
+            }, 700);
 
-            } else {
+        } else {
+            const resultado = await respuesta.text();
 
             mensaje.style.color = "red";
             mensaje.textContent = resultado;
-
-            }
-
-        } catch (error) {
-
-            mensaje.style.color = "red";
-            mensaje.textContent =
-                "No se pudo conectar con el servidor.";
-
-            console.error(error);
         }
 
-    });
+        } catch (error) {
+            mensaje.style.color = "red";
+            mensaje.textContent = "No se pudo conectar con el servidor.";
+            console.error(error);
+
+        } finally {
+            boton.disabled = false;
+            boton.textContent = "Iniciar sesión";
+        }
+    }   
+);
 
 </script>
 </body>
