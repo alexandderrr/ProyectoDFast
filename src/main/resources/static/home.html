@@ -126,7 +126,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
 
         <div class="usuario">
-            Usuario: <strong id="correoUsuario"></strong>
+             Hola, <strong id="nombreUsuario"></strong>
+             <span id="rolUsuario"></span>
         </div>
 
     </header>
@@ -134,67 +135,112 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
     <div class="contenedor">
 
-        <h1>Bienvenido a D-Fast 👋</h1>
+        <h1 id="saludoUsuario">Bienvenido a D-Fast 👋</h1>
 
         <p class="bienvenida">
             Selecciona una opción para continuar.
         </p>
 
 
-        <div class="tarjetas">
+        
+    <div class="tarjetas" id="panelCliente">
 
-            <div class="tarjeta">
-
-                <div class="icono">🛒</div>
-
-                <h2>Comercios</h2>
-
-                <p>
-                    Consulta los comercios disponibles.
-                </p>
-
-            </div>
-
-
-            <div class="tarjeta">
-
-                <div class="icono">📦</div>
-
-                <h2>Mis pedidos</h2>
-
-                <p>
-                    Consulta y administra tus pedidos.
-                </p>
-
-            </div>
-
-
-            <div class="tarjeta">
-
-                <div class="icono">🚚</div>
-
-                <h2>Seguimiento</h2>
-
-                <p>
-                    Consulta el estado de tus entregas.
-                </p>
-
-            </div>
-
-
-            <div class="tarjeta">
-
-                <div class="icono">⭐</div>
-
-                <h2>Calificaciones</h2>
-
-                <p>
-                    Consulta y realiza calificaciones.
-                </p>
-
-            </div>
-
+        <div class="tarjeta">
+            <div class="icono">🛒</div>
+            <h2>Comercios</h2>
+            <p>Consulta los comercios disponibles.</p>
         </div>
+
+        <div class="tarjeta">
+            <div class="icono">📦</div>
+            <h2>Mis pedidos</h2>
+            <p>Consulta y administra tus pedidos.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">🚚</div>
+            <h2>Seguimiento</h2>
+            <p>Consulta el estado de tus entregas.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">⭐</div>
+            <h2>Calificaciones</h2>
+            <p>Consulta y realiza calificaciones.</p>
+        </div>
+
+    </div>
+
+    <div class="tarjetas" id="panelAdmin" style="display: none;">
+
+        <div class="tarjeta">
+            <div class="icono">👥</div>
+            <h2>Gestión de usuarios</h2>
+            <p>Prepara la administración de los usuarios de D-Fast.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">📦</div>
+            <h2>Gestión de pedidos</h2>
+            <p>Prepara la consulta y administración de pedidos.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">🏪</div>
+            <h2>Gestión de comercios</h2>
+            <p>Prepara la administración de los comercios.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">📊</div>
+            <h2>Panel general</h2>
+            <p>Espacio reservado para información general de D-Fast.</p>
+        </div>
+    </div>
+        
+        <div class="tarjetas" id="panelComercio" style="display: none;">
+
+        <div class="tarjeta">
+            <div class="icono">🏪</div>
+            <h2>Mi comercio</h2>
+            <p>Prepara la gestión de la información del comercio.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">📦</div>
+            <h2>Pedidos recibidos</h2>
+            <p>Prepara la consulta de pedidos para el comercio.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">📊</div>
+            <h2>Resumen de actividad</h2>
+            <p>Espacio para consultar la actividad comercial.</p>
+        </div>
+
+    </div>
+
+    <div class="tarjetas" id="panelRepartidor" style="display: none;">
+
+        <div class="tarjeta">
+            <div class="icono">🚚</div>
+            <h2>Mis entregas</h2>
+            <p>Prepara la consulta de entregas asignadas.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">📍</div>
+            <h2>Seguimiento</h2>
+            <p>Prepara la actualización del estado de las entregas.</p>
+        </div>
+
+        <div class="tarjeta">
+            <div class="icono">🗂️</div>
+            <h2>Historial de entregas</h2>
+            <p>Espacio para consultar entregas anteriores.</p>
+        </div>
+
+    </div>
 
 
         <button class="btn-cerrar" onclick="cerrarSesion()">
@@ -205,28 +251,54 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 
     <script>
-
         const correo = sessionStorage.getItem("correo");
+        const nombre = sessionStorage.getItem("nombreUsuario");
+        const rol = sessionStorage.getItem("rol");
 
-        if (!correo) {
-
+        if (!correo || !nombre || !rol) {
             window.location.href = "login.html";
-
         } else {
+            document.getElementById("nombreUsuario").textContent = nombre;
+            document.getElementById("rolUsuario").textContent =
+                " · " + rol.charAt(0).toUpperCase() + rol.slice(1).toLowerCase();
 
-            document.getElementById("correoUsuario").textContent = correo;
+            document.getElementById("saludoUsuario").textContent =
+                "¡Bienvenido, " + nombre + "! 👋";
+        
+                
+            const paneles = [
+                "panelAdmin",
+                "panelCliente",
+                "panelComercio",
+                "panelRepartidor"
+            ];
+
+            // Ocultamos todos los paneles inicialmente
+            paneles.forEach(function(id) {
+                document.getElementById(id).style.display = "none";
+            });
+
+            const rolActual = rol.toUpperCase();
+
+            if (rolActual === "ADMIN") {
+                document.getElementById("panelAdmin").style.display = "grid";
+            } else if (rolActual === "CLIENTE") {
+                document.getElementById("panelCliente").style.display = "grid";
+            } else if (rolActual === "COMERCIO") {
+                document.getElementById("panelComercio").style.display = "grid";
+            } else if (rolActual === "REPARTIDOR") {
+                document.getElementById("panelRepartidor").style.display = "grid";
+            } else {
+                document.getElementById("saludoUsuario").textContent =
+                "Tu cuenta no tiene un rol reconocido.";
+            }
 
         }
-
 
         function cerrarSesion() {
-
             sessionStorage.clear();
-
             window.location.href = "index.html";
-
         }
-
     </script>
 
 </body>
