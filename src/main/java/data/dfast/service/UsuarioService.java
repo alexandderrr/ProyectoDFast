@@ -15,6 +15,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import data.dfast.dto.UsuarioRespuestaDTO;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UsuarioService {
 
@@ -31,5 +35,16 @@ public class UsuarioService {
 
     public boolean existePorCorreo(String correo) {
         return usuarioRepository.findByCorreo(correo).isPresent();
+    }
+    public List<UsuarioRespuestaDTO> listarUsuarios() {
+    return usuarioRepository.findAll()
+            .stream()
+            .map(usuario -> new UsuarioRespuestaDTO(
+                    usuario.getId(),
+                    usuario.getNombre(),
+                    usuario.getCorreo(),
+                    usuario.getRol()
+            ))
+            .collect(Collectors.toList());
     }
 }
