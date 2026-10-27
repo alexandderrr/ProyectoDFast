@@ -173,12 +173,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
     <div class="tarjetas" id="panelAdmin" style="display: none;">
 
-        <div class="tarjeta">
+        <div class="tarjeta" onclick="mostrarGestionUsuarios()">
             <div class="icono">👥</div>
             <h2>Gestión de usuarios</h2>
-            <p>Prepara la administración de los usuarios de D-Fast.</p>
+            <p>Consulta los usuarios registrados en D-Fast.</p>
         </div>
-
+        
         <div class="tarjeta">
             <div class="icono">📦</div>
             <h2>Gestión de pedidos</h2>
@@ -241,6 +241,46 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </div>
 
     </div>
+        
+        
+        <section id="gestionUsuarios" style="display: none; margin-top: 30px;">
+
+            <h2>Gestión de usuarios</h2>
+            <p>Usuarios registrados en D-Fast.</p>
+
+            <button type="button" onclick="cargarUsuarios()">
+                Actualizar lista
+            </button>
+
+            <button type="button" onclick="volverAlPanel()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeUsuarios"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                              border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Nombre</th>
+                            <th style="padding: 12px;">Correo</th>
+                            <th style="padding: 12px;">Rol</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaUsuarios">
+                        <tr>
+                            <td colspan="4" style="padding: 12px;">
+                                Pulsa «Actualizar lista» para consultar los usuarios.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
 
 
         <button class="btn-cerrar" onclick="cerrarSesion()">
@@ -294,6 +334,63 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             }
 
         }
+            
+        async function mostrarGestionUsuarios() {
+            document.getElementById("panelAdmin").style.display = "none";
+            document.getElementById("gestionUsuarios").style.display = "block";
+
+            await cargarUsuarios();
+        }
+
+        function volverAlPanel() {
+            document.getElementById("gestionUsuarios").style.display = "none";
+            document.getElementById("panelAdmin").style.display = "grid";
+        }
+
+        async function cargarUsuarios() {
+            const tabla = document.getElementById("tablaUsuarios");
+            const mensaje = document.getElementById("mensajeUsuarios");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando usuarios...";
+
+            try {
+                const respuesta = await fetch("/api/usuarios");
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los usuarios.");
+                }
+
+                const usuarios = await respuesta.json();
+
+                if (usuarios.length === 0) {
+                    mensaje.textContent = "No hay usuarios registrados.";
+                    return;
+                }
+
+                usuarios.forEach(function(usuario) {
+                    const fila = document.createElement("tr");
+
+                    [usuario.id, usuario.nombre, usuario.correo, usuario.rol]
+                        .forEach(function(dato) {
+                            const celda = document.createElement("td");
+                            celda.style.padding = "12px";
+                            celda.textContent = dato ?? "";
+                            fila.appendChild(celda);
+                        });
+
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = "Usuarios encontrados: " + usuarios.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                    "No se pudo cargar la lista. Verifica que el servidor esté funcionando.";
+                console.error(error);
+            }
+        }
+            
 
         function cerrarSesion() {
             sessionStorage.clear();
