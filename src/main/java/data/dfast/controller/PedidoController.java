@@ -21,6 +21,8 @@ import java.util.Optional;
 import data.dfast.dto.PedidoRespuestaDTO;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.PatchMapping;
+
 @RestController
 @RequestMapping("/api/pedidos")
 public class PedidoController {
@@ -69,5 +71,56 @@ public class PedidoController {
 
         return ResponseEntity.ok(pedidos);
 }
+
+            // Consultar las entregas asignadas a un repartidor
+    @GetMapping("/repartidor/{repartidorId}")
+    public ResponseEntity<?> listarPedidosPorRepartidor(
+            @PathVariable Long repartidorId) {
+
+        Optional<Usuario> repartidor
+                = pedidoService.buscarCliente(repartidorId);
+
+        if (repartidor.isEmpty()
+                || !"REPARTIDOR".equalsIgnoreCase(
+                        repartidor.get().getRol())) {
+            return ResponseEntity.badRequest()
+                    .body("El usuario indicado no es un repartidor válido.");
+        }
+
+        return ResponseEntity.ok(
+                pedidoService.listarPedidosPorRepartidor(repartidorId));
+    }
+
+    // Actualizar el estado de una entrega
+    @PatchMapping("/{pedidoId}/estado")
+    public ResponseEntity<?> actualizarEstadoPedido(
+            @PathVariable Long pedidoId,
+            @RequestParam Long repartidorId,
+            @RequestParam String estado) {
+
+        try {
+            return ResponseEntity.ok(
+                    pedidoService.actualizarEstadoPedido(
+                            pedidoId, repartidorId, estado));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
+        // Asignar un pedido a un repartidor
+    @PatchMapping("/{pedidoId}/asignar-repartidor")
+    public ResponseEntity<?> asignarRepartidor(
+            @PathVariable Long pedidoId,
+            @RequestParam Long repartidorId) {
+
+        try {
+            return ResponseEntity.ok(
+                    pedidoService.asignarRepartidor(
+                            pedidoId, repartidorId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                    .body(e.getMessage());
+        }
+    }
 
 }

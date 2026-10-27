@@ -62,4 +62,115 @@ public class PedidoService {
             .collect(Collectors.toList());
 }
 
+        // Consultar los pedidos asignados a un repartidor
+    public List<PedidoRespuestaDTO> listarPedidosPorRepartidor(
+            Long repartidorId) {
+
+        return pedidoRepository.findByRepartidorId(repartidorId)
+                .stream()
+                .map(pedido -> new PedidoRespuestaDTO(
+                pedido.getId(),
+                pedido.getDescripcion(),
+                pedido.getPeso(),
+                pedido.getDireccionRecogida(),
+                pedido.getDireccionEntrega(),
+                pedido.getEstado()
+        ))
+                .collect(Collectors.toList());
+    }
+
+    // Actualizar el estado de un pedido asignado al repartidor
+    public PedidoRespuestaDTO actualizarEstadoPedido(
+            Long pedidoId, Long repartidorId, String nuevoEstado) {
+
+        Usuario repartidor = usuarioRepository.findById(repartidorId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException(
+                        "El repartidor no existe."));
+
+        if (!"REPARTIDOR".equalsIgnoreCase(repartidor.getRol())) {
+            throw new IllegalArgumentException(
+                    "El usuario indicado no es un repartidor.");
+        }
+
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException(
+                        "El pedido no existe."));
+
+        if (pedido.getRepartidor() == null
+                || !pedido.getRepartidor().getId().equals(repartidorId)) {
+            throw new IllegalArgumentException(
+                    "Este pedido no está asignado a ese repartidor.");
+        }
+
+        String estado = nuevoEstado == null
+                ? ""
+                : nuevoEstado.trim().toUpperCase(java.util.Locale.ROOT);
+
+        if ("PENDIENTE".equals(pedido.getEstado())
+                && "EN_RUTA".equals(estado)) {
+
+            pedido.setEstado("EN_RUTA");
+
+        } else if ("EN_RUTA".equals(pedido.getEstado())
+                && "ENTREGADO".equals(estado)) {
+
+            pedido.setEstado("ENTREGADO");
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Transición no válida. Usa PENDIENTE → EN_RUTA → ENTREGADO.");
+        }
+
+        Pedido actualizado = pedidoRepository.save(pedido);
+
+        return new PedidoRespuestaDTO(
+                actualizado.getId(),
+                actualizado.getDescripcion(),
+                actualizado.getPeso(),
+                actualizado.getDireccionRecogida(),
+                actualizado.getDireccionEntrega(),
+                actualizado.getEstado()
+        );
+    }
+    
+        // Asignar un pedido a un repartidor
+    public PedidoRespuestaDTO asignarRepartidor(
+            Long pedidoId, Long repartidorId) {
+
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException(
+                        "El pedido no existe."));
+
+        Usuario repartidor = usuarioRepository.findById(repartidorId)
+                .orElseThrow(()
+                        -> new IllegalArgumentException(
+                        "El repartidor no existe."));
+
+        if (!"REPARTIDOR".equalsIgnoreCase(repartidor.getRol())) {
+            throw new IllegalArgumentException(
+                    "El usuario indicado no tiene el rol REPARTIDOR.");
+        }
+
+        if ("ENTREGADO".equalsIgnoreCase(pedido.getEstado())) {
+            throw new IllegalArgumentException(
+                    "No se puede asignar un pedido que ya fue entregado.");
+        }
+
+        pedido.setRepartidor(repartidor);
+
+        Pedido actualizado = pedidoRepository.save(pedido);
+
+        return new PedidoRespuestaDTO(
+                actualizado.getId(),
+                actualizado.getDescripcion(),
+                actualizado.getPeso(),
+                actualizado.getDireccionRecogida(),
+                actualizado.getDireccionEntrega(),
+                actualizado.getEstado()
+        );
+    }
+
 }

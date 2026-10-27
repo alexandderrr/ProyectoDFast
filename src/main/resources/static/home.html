@@ -222,7 +222,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
     <div class="tarjetas" id="panelRepartidor" style="display: none;">
 
-        <div class="tarjeta">
+        <div class="tarjeta" onclick="mostrarMisEntregas()">
             <div class="icono">🚚</div>
             <h2>Mis entregas</h2>
             <p>Prepara la consulta de entregas asignadas.</p>
@@ -387,6 +387,43 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </table>
             </div>
 
+        </section>
+        
+
+        <section id="seccionEntregas"
+                 style="display: none; margin-top: 30px;">
+
+            <h2>Mis entregas</h2>
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta tus pedidos asignados y actualiza su estado.
+            </p>
+
+            <button type="button" onclick="cargarMisEntregas()">
+                Actualizar entregas
+            </button>
+
+            <button type="button" onclick="volverPanelRepartidor()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeEntregas" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                       border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaEntregas"></tbody>
+                </table>
+            </div>
         </section>
         
         <button class="btn-cerrar" onclick="cerrarSesion()">
@@ -710,7 +747,138 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             }
         }
 
+        
+        async function mostrarMisEntregas() {
+            document.getElementById("panelRepartidor").style.display = "none";
+            document.getElementById("seccionEntregas").style.display = "block";
 
+            await cargarMisEntregas();
+        }
+
+        function volverPanelRepartidor() {
+            document.getElementById("seccionEntregas").style.display = "none";
+            document.getElementById("panelRepartidor").style.display = "grid";
+        }
+
+        async function cargarMisEntregas() {
+            const tabla = document.getElementById("tablaEntregas");
+            const mensaje = document.getElementById("mensajeEntregas");
+            const repartidorId = sessionStorage.getItem("idUsuario");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando entregas...";
+
+            if (!repartidorId ||
+                (sessionStorage.getItem("rol") || "").toUpperCase() !== "REPARTIDOR") {
+                mensaje.textContent =
+                    "No se encontró una sesión válida de repartidor.";
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(
+                    "/api/pedidos/repartidor/" + encodeURIComponent(repartidorId)
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar las entregas.");
+                }
+
+                const pedidos = await respuesta.json();
+
+                if (pedidos.length === 0) {
+                    mensaje.textContent = "No tienes entregas asignadas.";
+                    return;
+                }
+
+                pedidos.forEach(function(pedido) {
+                    const fila = document.createElement("tr");
+
+                    [
+                        pedido.id,
+                        pedido.descripcion,
+                        pedido.direccionRecogida,
+                        pedido.direccionEntrega,
+                        pedido.estado
+                    ].forEach(function(dato) {
+                        const celda = document.createElement("td");
+                        celda.style.padding = "12px";
+                        celda.style.borderBottom = "1px solid #e5e7eb";
+                        celda.textContent = dato ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                    const celdaAccion = document.createElement("td");
+                    celdaAccion.style.padding = "12px";
+
+                    const boton = document.createElement("button");
+
+                    if (pedido.estado === "PENDIENTE") {
+                        boton.textContent = "Iniciar entrega";
+                        boton.addEventListener("click", function() {
+                            actualizarEstadoEntrega(pedido.id, "EN_RUTA");
+                        });
+                    } else if (pedido.estado === "EN_RUTA") {
+                        boton.textContent = "Marcar entregado";
+                        boton.addEventListener("click", function() {
+                            actualizarEstadoEntrega(pedido.id, "ENTREGADO");
+                        });
+                    } else {
+                        boton.textContent = "Finalizada";
+                        boton.disabled = true;
+                    }
+
+                    celdaAccion.appendChild(boton);
+                    fila.appendChild(celdaAccion);
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = "Entregas encontradas: " + pedidos.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                    error.message || "Error al cargar las entregas.";
+                console.error(error);
+            }
+        }
+
+        async function actualizarEstadoEntrega(pedidoId, nuevoEstado) {
+            const repartidorId = sessionStorage.getItem("idUsuario");
+            const mensaje = document.getElementById("mensajeEntregas");
+
+            mensaje.textContent = "Actualizando estado...";
+
+            try {
+                const parametros = new URLSearchParams({
+                    repartidorId: repartidorId,
+                    estado: nuevoEstado
+                });
+
+                const respuesta = await fetch(
+                    "/api/pedidos/" + encodeURIComponent(pedidoId)
+                    + "/estado?" + parametros.toString(),
+                    { method: "PATCH" }
+                );
+
+                const resultado = await respuesta.text();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        resultado || "No se pudo actualizar el estado."
+                    );
+                }
+
+                mensaje.textContent =
+                    "Pedido #" + pedidoId + " actualizado correctamente.";
+
+                await cargarMisEntregas();
+
+            } catch (error) {
+                mensaje.textContent =
+                    error.message || "Error al actualizar el pedido.";
+                console.error(error);
+            }
+        }
 
 
         function cerrarSesion() {
