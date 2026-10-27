@@ -18,6 +18,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import data.dfast.dto.PedidoRespuestaDTO;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class PedidoService {
 
@@ -43,4 +47,19 @@ public class PedidoService {
 
         return pedidoRepository.save(nuevoPedido);
     }
+          
+    public List<PedidoRespuestaDTO> listarPedidosPorCliente(Long clienteId) {
+        return pedidoRepository.findByClienteId(clienteId)
+            .stream()
+            .map(pedido -> new PedidoRespuestaDTO(
+                    pedido.getId(),
+                    pedido.getDescripcion(),
+                    pedido.getPeso(),
+                    pedido.getDireccionRecogida(),
+                    pedido.getDireccionEntrega(),
+                    pedido.getEstado()
+            ))
+            .collect(Collectors.toList());
+}
+
 }

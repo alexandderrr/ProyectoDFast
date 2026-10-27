@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import data.dfast.dto.PedidoRespuestaDTO;
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/pedidos")
 public class PedidoController {
@@ -40,6 +43,11 @@ public class PedidoController {
                             + request.getClienteId()
                             + " no existe.");
         }
+        
+        if (!"CLIENTE".equalsIgnoreCase(clienteOpt.get().getRol())) {
+            return ResponseEntity.badRequest()
+                    .body("Solo los usuarios con rol CLIENTE pueden crear pedidos.");
+        }
 
         // 2. Creamos el pedido mediante el servicio
         Pedido guardado =
@@ -51,4 +59,15 @@ public class PedidoController {
                         + guardado.getId()
         );
     }
+      
+    @GetMapping("/cliente/{clienteId}")
+        public ResponseEntity<List<PedidoRespuestaDTO>> listarPedidosPorCliente(
+            @PathVariable Long clienteId) {
+
+        List<PedidoRespuestaDTO> pedidos =
+            pedidoService.listarPedidosPorCliente(clienteId);
+
+        return ResponseEntity.ok(pedidos);
+}
+
 }

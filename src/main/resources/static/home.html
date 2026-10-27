@@ -151,13 +151,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <p>Consulta los comercios disponibles.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" onclick="mostrarMisPedidos()">
             <div class="icono">📦</div>
             <h2>Mis pedidos</h2>
             <p>Consulta y administra tus pedidos.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" onclick="mostrarSeguimiento()">
             <div class="icono">🚚</div>
             <h2>Seguimiento</h2>
             <p>Consulta el estado de tus entregas.</p>
@@ -281,8 +281,114 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
 
         </section>
+        
 
+        <section id="misPedidos" style="display: none; margin-top: 30px;">
 
+            <h2>Mis pedidos</h2>
+            <p>Consulta el estado y los detalles de tus pedidos.</p>
+            
+
+            <h3 style="margin: 24px 0 15px;">Crear un pedido</h3>
+
+            <form id="formPedido" style="background: white; padding: 20px;
+            border-radius: 12px; margin-bottom: 25px;">
+
+                <label for="descripcionPedido">Descripción del pedido</label>
+                <input id="descripcionPedido" type="text" required maxlength="200"
+                       placeholder="Ej. Paquete de documentos"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;">
+
+                <label for="pesoPedido">Peso (kg)</label>
+                <input id="pesoPedido" type="number" required min="0.01" step="0.01"
+                       placeholder="Ej. 2.5"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;">
+
+                <label for="recogidaPedido">Dirección de recogida</label>
+                <input id="recogidaPedido" type="text" required maxlength="250"
+                       placeholder="¿Dónde recoger el paquete?"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;">
+
+                <label for="entregaPedido">Dirección de entrega</label>
+                <input id="entregaPedido" type="text" required maxlength="250"
+                       placeholder="¿Dónde entregar el paquete?"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;">
+
+                <button type="submit" id="btnCrearPedido">
+                    Registrar pedido
+                </button>
+
+                <p id="mensajeCrearPedido" style="margin-top: 12px;"></p>
+            </form>
+
+            <button type="button" onclick="cargarMisPedidos()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverAlPanelCliente()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeMisPedidos" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaMisPedidos"></tbody>
+                </table>
+            </div>
+
+        </section>
+        
+
+        <section id="seccionSeguimiento" style="display: none; margin-top: 30px;">
+
+            <h2>Seguimiento de mis pedidos</h2>
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta el estado actual de tus entregas.
+            </p>
+
+            <button type="button" onclick="cargarSeguimiento()">
+                Actualizar seguimiento
+            </button>
+
+            <button type="button" onclick="volverDelSeguimiento()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeSeguimiento" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">Pedido</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Dirección de entrega</th>
+                            <th style="padding: 12px;">Estado actual</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaSeguimiento"></tbody>
+                </table>
+            </div>
+
+        </section>
+        
         <button class="btn-cerrar" onclick="cerrarSesion()">
             Cerrar sesión
         </button>
@@ -391,12 +497,227 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             }
         }
             
+                
+        async function mostrarMisPedidos() {
+            document.getElementById("panelCliente").style.display = "none";
+            document.getElementById("misPedidos").style.display = "block";
+
+        await cargarMisPedidos();
+        }
+
+        function volverAlPanelCliente() {
+            document.getElementById("misPedidos").style.display = "none";
+            document.getElementById("panelCliente").style.display = "grid";
+        }
+
+        async function cargarMisPedidos() {
+            const tabla = document.getElementById("tablaMisPedidos");
+            const mensaje = document.getElementById("mensajeMisPedidos");
+            const idUsuario = sessionStorage.getItem("idUsuario");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando pedidos...";
+
+        if (!idUsuario) {
+            mensaje.textContent =
+                "No se encontró tu sesión. Inicia sesión nuevamente.";
+            return;
+        }
+
+        try {
+            const respuesta = await fetch(
+                "/api/pedidos/cliente/" + encodeURIComponent(idUsuario)
+            );
+
+            if (!respuesta.ok) {
+                throw new Error("No se pudieron consultar los pedidos.");
+            }
+
+            const pedidos = await respuesta.json();
+
+            if (pedidos.length === 0) {
+                mensaje.textContent = "Todavía no tienes pedidos registrados.";
+                return;
+            }
+
+            pedidos.forEach(function(pedido) {
+                const fila = document.createElement("tr");
+
+                [
+                    pedido.id,
+                    pedido.descripcion,
+                    pedido.peso,
+                    pedido.direccionRecogida,
+                    pedido.direccionEntrega,
+                    pedido.estado
+                ].forEach(function(dato) {
+                    const celda = document.createElement("td");
+                    celda.style.padding = "12px";
+                    celda.style.borderBottom = "1px solid #e5e7eb";
+                    celda.textContent = dato ?? "";
+                    fila.appendChild(celda);
+                });
+
+                tabla.appendChild(fila);
+            });
+
+            mensaje.textContent =
+                "Pedidos encontrados: " + pedidos.length;
+
+        } catch (error) {
+            mensaje.textContent =
+                "No se pudieron cargar los pedidos. Verifica el servidor.";
+            console.error(error);
+        }
+        }
+        
+        
+        document.getElementById("formPedido").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+                const mensaje = document.getElementById("mensajeCrearPedido");
+                const boton = document.getElementById("btnCrearPedido");
+                const idUsuario = sessionStorage.getItem("idUsuario");
+                const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+            if (!idUsuario || rolActual !== "CLIENTE") {
+                mensaje.textContent = "Debes iniciar sesión con una cuenta de cliente.";
+                return;
+        }
+
+            const peso = Number(document.getElementById("pesoPedido").value);
+
+            if (!Number.isFinite(peso) || peso <= 0) {
+                mensaje.textContent = "Ingresa un peso mayor que cero.";
+                return;
+        }
+
+            const pedido = {
+                descripcion: document.getElementById("descripcionPedido").value.trim(),
+                peso: peso,
+                direccionRecogida: document.getElementById("recogidaPedido").value.trim(),
+                direccionEntrega: document.getElementById("entregaPedido").value.trim(),
+                clienteId: Number(idUsuario)
+        };
+
+            if (!pedido.descripcion || !pedido.direccionRecogida || !pedido.direccionEntrega) {
+                mensaje.textContent = "Completa todos los campos.";
+                return;
+        }
+
+            boton.disabled = true;
+            boton.textContent = "Registrando...";
+            mensaje.textContent = "";
+
+            try {
+                const respuesta = await fetch("/api/pedidos", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                },
+                    body: JSON.stringify(pedido)
+            });
+
+                const resultado = await respuesta.text();
+
+                if (!respuesta.ok) {
+                    throw new Error(resultado || "No se pudo registrar el pedido.");
+                }
+
+                mensaje.textContent = resultado;
+                document.getElementById("formPedido").reset();
+
+                await cargarMisPedidos();
+
+            } catch (error) {
+                mensaje.textContent = error.message ||
+                    "Ocurrió un error al registrar el pedido.";
+                console.error(error);
+            } finally {
+                boton.disabled = false;
+                boton.textContent = "Registrar pedido";
+            }
+        });
+        
+       
+        async function mostrarSeguimiento() {
+            document.getElementById("panelCliente").style.display = "none";
+            document.getElementById("seccionSeguimiento").style.display = "block";
+
+            await cargarSeguimiento();
+        }
+
+        function volverDelSeguimiento() {
+            document.getElementById("seccionSeguimiento").style.display = "none";
+            document.getElementById("panelCliente").style.display = "grid";
+        }
+
+        async function cargarSeguimiento() {
+            const tabla = document.getElementById("tablaSeguimiento");
+            const mensaje = document.getElementById("mensajeSeguimiento");
+            const idUsuario = sessionStorage.getItem("idUsuario");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Consultando el estado de tus pedidos...";
+
+            if (!idUsuario) {
+                mensaje.textContent = "Tu sesión no está disponible. Inicia sesión nuevamente.";
+                return;
+            }
+
+            try {
+            const respuesta = await fetch(
+                    "/api/pedidos/cliente/" + encodeURIComponent(idUsuario)
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudo consultar el seguimiento.");
+                }
+
+                const pedidos = await respuesta.json();
+
+                if (pedidos.length === 0) {
+                    mensaje.textContent = "Todavía no tienes pedidos para consultar.";
+                    return;
+                }
+
+                pedidos.forEach(function(pedido) {
+                    const fila = document.createElement("tr");
+
+                    [
+                        pedido.id,
+                        pedido.descripcion,
+                        pedido.direccionEntrega,
+                        pedido.estado
+                    ].forEach(function(dato) {
+                        const celda = document.createElement("td");
+                        celda.style.padding = "12px";
+                        celda.style.borderBottom = "1px solid #e5e7eb";
+                        celda.textContent = dato ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                tabla.appendChild(fila);
+            });
+
+                mensaje.textContent =
+                    "Pedidos en seguimiento: " + pedidos.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                "No se pudo consultar el seguimiento. Verifica el servidor.";
+                console.error(error);
+            }
+        }
+
+
+
 
         function cerrarSesion() {
             sessionStorage.clear();
             window.location.href = "index.html";
         }
-    </script>
+        </script>
 
 </body>
 
