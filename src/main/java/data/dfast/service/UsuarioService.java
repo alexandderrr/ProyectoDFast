@@ -43,7 +43,8 @@ public class UsuarioService {
                     usuario.getId(),
                     usuario.getNombre(),
                     usuario.getCorreo(),
-                    usuario.getRol()
+                    usuario.getRol(),
+                    usuario.getNombreComercio()
             ))
             .collect(Collectors.toList());
     }

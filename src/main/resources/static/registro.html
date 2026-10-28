@@ -184,6 +184,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 </option>
 
             </select>
+            
+            <div id="campoNombreComercio" style="display: none;">
+                <label for="nombreComercio">Nombre del comercio</label>
+
+                <input
+                    type="text"
+                    id="nombreComercio"
+                    placeholder="Ej. Repuestos El Rápido"
+                    maxlength="120"
+                    >
+            </div>
 
             <button type="submit">
                 Crear cuenta
@@ -206,20 +217,38 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
 
     <script>
+        
+        const selectorRol = document.getElementById("rol");
+            const campoNombreComercio =
+                document.getElementById("campoNombreComercio");
+            const inputNombreComercio =
+                document.getElementById("nombreComercio");
+
+                selectorRol.addEventListener("change", function() {
+            const esComercio = selectorRol.value === "COMERCIO";
+
+                campoNombreComercio.style.display = esComercio ? "block" : "none";
+                inputNombreComercio.required = esComercio;
+
+            if (!esComercio) {
+                inputNombreComercio.value = "";
+            }
+            });
 
         document.getElementById("registroForm").addEventListener("submit", async function(event) {
-
+            
             event.preventDefault();
 
             const nombre = document.getElementById("nombre").value;
             const correo = document.getElementById("correo").value;
             const password = document.getElementById("password").value;
             const rol = document.getElementById("rol").value;
-
+            
             const mensaje = document.getElementById("mensaje");
 
             try {
 
+                const nombreComercio = document.getElementById("nombreComercio").value.trim();
                 const respuesta = await fetch("/api/auth/registro", {
 
                     method: "POST",
@@ -228,11 +257,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         "Content-Type": "application/json"
                     },
 
-                    body: JSON.stringify({
+                        body: JSON.stringify({
                         nombre: nombre,
                         correo: correo,
                         password: password,
-                        rol: rol
+                        rol: rol,
+                        nombreComercio: rol === "COMERCIO" ? nombreComercio : null
                     })
 
                 });

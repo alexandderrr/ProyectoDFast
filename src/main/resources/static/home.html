@@ -954,7 +954,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
                 comercios.forEach(function(comercio) {
                     const opcion = document.createElement("option");
                     opcion.value = comercio.id;
-                    opcion.textContent = comercio.nombre;
+                    opcion.textContent = comercio.nombreComercio || comercio.nombre;
                     selector.appendChild(opcion);
                 });
 

@@ -14,13 +14,20 @@ public class UsuarioRespuestaDTO {
     private String nombre;
     private String correo;
     private String rol;
+    private String nombreComercio;
+    
 
-    public UsuarioRespuestaDTO(Long id, String nombre,
-                               String correo, String rol) {
+    public UsuarioRespuestaDTO(
+            Long id,
+            String nombre,
+            String correo,
+            String rol,
+            String nombreComercio) {
         this.id = id;
         this.nombre = nombre;
         this.correo = correo;
         this.rol = rol;
+        this.nombreComercio = nombreComercio;
     }
 
     public Long getId() {
@@ -37,5 +44,9 @@ public class UsuarioRespuestaDTO {
 
     public String getRol() {
         return rol;
+    }
+    
+    public String getNombreComercio() {
+        return nombreComercio;
     }
 }
