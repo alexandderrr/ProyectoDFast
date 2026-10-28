@@ -924,51 +924,72 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
         
         // Cargar los comercios disponibles
         async function cargarComercios() {
-            const selector = document.getElementById("comercioPedido");
+        const selector = document.getElementById("comercioPedido");
 
             selector.replaceChildren();
 
-            const opcionInicial = document.createElement("option");
+        const opcionInicial = document.createElement("option");
             opcionInicial.value = "";
-            opcionInicial.textContent = "Selecciona un comercio";
+            opcionInicial.textContent = "Cargando comercios...";
             selector.appendChild(opcionInicial);
 
-            try {
-                const respuesta = await fetch("/api/usuarios");
+        try {
+            const respuesta = await fetch("/api/usuarios", {
+                cache: "no-store"
+            });
 
-                if (!respuesta.ok) {
-                    throw new Error("No se pudieron consultar los usuarios.");
-                }
-
-                const usuarios = await respuesta.json();
-
-                const comercios = usuarios.filter(function(usuario) {
-                    return (usuario.rol || "").toUpperCase() === "COMERCIO";
-                });
-
-                if (comercios.length === 0) {
-                    opcionInicial.textContent = "No hay comercios registrados";
-                    return;
-                }
-
-                comercios.forEach(function(comercio) {
-                    const opcion = document.createElement("option");
-                    opcion.value = comercio.id;
-                    opcion.textContent = comercio.nombreComercio || comercio.nombre;
-                    selector.appendChild(opcion);
-                });
-
-            } catch (error) {
-                selector.replaceChildren();
-
-                const opcionError = document.createElement("option");
-                opcionError.value = "";
-                opcionError.textContent = "Error al cargar comercios";
-                selector.appendChild(opcionError);
-
-                console.error(error);
-            }
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron consultar los usuarios.");
         }
+
+        const usuarios = await respuesta.json();
+
+        const comercios = usuarios.filter(function(usuario) {
+            return (usuario.rol || "").trim().toUpperCase() === "COMERCIO";
+        });
+
+        selector.replaceChildren();
+
+        const opcionDefault = document.createElement("option");
+        opcionDefault.value = "";
+        opcionDefault.textContent = comercios.length > 0
+            ? "Selecciona un comercio"
+            : "No hay comercios registrados";
+        selector.appendChild(opcionDefault);
+
+        comercios.forEach(function(comercio) {
+            const opcion = document.createElement("option");
+            opcion.value = comercio.id;
+
+            const nombreComercial =
+                typeof comercio.nombreComercio === "string"
+                    ? comercio.nombreComercio.trim()
+                    : "";
+
+            opcion.textContent =
+                nombreComercial || comercio.nombre || "Comercio sin nombre";
+
+            console.log("Opción del selector:", {
+                id: comercio.id,
+                nombrePersonal: comercio.nombre,
+                nombreComercio: comercio.nombreComercio,
+                textoMostrado: opcion.textContent
+            });
+
+            selector.appendChild(opcion);
+        });
+
+        } catch (error) {
+            selector.replaceChildren();
+
+            const opcionError = document.createElement("option");
+            opcionError.value = "";
+            opcionError.textContent = "Error al cargar comercios";
+            selector.appendChild(opcionError);
+
+            console.error("Error al cargar comercios:", error);
+        }
+        }   
 
         async function cargarMisPedidos() {
             const tabla = document.getElementById("tablaMisPedidos");
