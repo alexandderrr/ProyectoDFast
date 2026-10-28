@@ -62,6 +62,14 @@ public class PedidoController {
         );
     }
     
+    // Consultar todos los pedidos para el administrador
+    @GetMapping
+    public ResponseEntity<List<PedidoRespuestaDTO>> listarTodosLosPedidos() {
+        return ResponseEntity.ok(
+                pedidoService.listarTodosLosPedidos()
+        );
+    }
+    
     // Consultar los pedidos recibidos por un comercio
     @GetMapping("/comercio/{comercioId}")
     public ResponseEntity<?> listarPedidosPorComercio(
@@ -84,6 +92,26 @@ public class PedidoController {
 
         return ResponseEntity.ok(pedidos);
 }
+        
+        // Consultar pedidos disponibles
+        @GetMapping("/disponibles")
+        public ResponseEntity<?> listarPedidosDisponibles() {
+            return ResponseEntity.ok(
+                    pedidoService.listarPedidosDisponibles());
+        }
+
+        // Aceptar un pedido disponible
+            @PatchMapping("/{pedidoId}/aceptar")
+            public ResponseEntity<?> aceptarPedido(
+                    @PathVariable Long pedidoId,
+                    @RequestParam Long repartidorId) {
+                try {
+                    return ResponseEntity.ok(
+                            pedidoService.aceptarPedido(pedidoId, repartidorId));
+                } catch (IllegalArgumentException e) {
+                    return ResponseEntity.badRequest().body(e.getMessage());
+                }
+            }
 
             // Consultar las entregas asignadas a un repartidor
     @GetMapping("/repartidor/{repartidorId}")

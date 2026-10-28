@@ -179,12 +179,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <p>Consulta los usuarios registrados en D-Fast.</p>
         </div>
         
-        <div class="tarjeta">
+        <div class="tarjeta" onclick="mostrarGestionPedidos()">
             <div class="icono">📦</div>
             <h2>Gestión de pedidos</h2>
-            <p>Prepara la consulta y administración de pedidos.</p>
+            <p>Consulta pedidos y asigna repartidores.</p>
         </div>
-
+        
         <div class="tarjeta">
             <div class="icono">🏪</div>
             <h2>Gestión de comercios</h2>
@@ -206,10 +206,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             <p>Prepara la gestión de la información del comercio.</p>
         </div>
 
-        <div class="tarjeta">
+        <div class="tarjeta" onclick="mostrarPedidosComercio()">
             <div class="icono">📦</div>
             <h2>Pedidos recibidos</h2>
-            <p>Prepara la consulta de pedidos para el comercio.</p>
+            <p>Consulta los pedidos que han realizado a tu comercio.</p>
         </div>
 
         <div class="tarjeta">
@@ -221,6 +221,12 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     </div>
 
     <div class="tarjetas" id="panelRepartidor" style="display: none;">
+        
+        <div class="tarjeta" onclick="mostrarPedidosDisponibles()">
+            <div class="icono">📦</div>
+            <h2>Pedidos disponibles</h2>
+            <p>Consulta y acepta pedidos que todavía no tienen repartidor.</p>
+        </div>
 
         <div class="tarjeta" onclick="mostrarMisEntregas()">
             <div class="icono">🚚</div>
@@ -282,6 +288,84 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         </section>
         
+        <section id="gestionPedidosAdmin"
+                 style="display: none; margin-top: 30px;">
+
+            <h2>Gestión de pedidos</h2>
+
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta todos los pedidos y asigna un repartidor a cada uno.
+            </p>
+
+            <button type="button" onclick="cargarPedidosAdmin()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverPanelAdminPedidos()">
+                Volver al panel
+            </button>
+
+            <p id="mensajePedidosAdmin" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Repartidor</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidosAdmin"></tbody>
+                </table>
+            </div>
+
+        </section>
+        
+        <section id="pedidosComercio" style="display: none; margin-top: 30px;">
+
+            <h2>Pedidos recibidos</h2>
+
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta los pedidos que los clientes han realizado a tu comercio.
+            </p>
+
+            <button type="button" onclick="cargarPedidosComercio()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverPanelComercio()">
+                Volver al panel
+            </button>
+
+            <p id="mensajePedidosComercio" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidosComercio"></tbody>
+                </table>
+            </div>
+
+        </section>
 
         <section id="misPedidos" style="display: none; margin-top: 30px;">
 
@@ -433,6 +517,52 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             </div>
         </section>
         
+        <section id="pedidosDisponibles"
+                 style="display: none; margin-top: 30px;">
+
+            <h2>Pedidos disponibles</h2>
+
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Estos pedidos todavía no tienen un repartidor asignado.
+            </p>
+
+            <button type="button" onclick="cargarPedidosDisponibles()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverPanelRepartidorDisponibles()">
+                Volver al panel
+            </button>
+
+            <p id="mensajePedidosDisponibles" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidosDisponibles">
+                        <tr>
+                            <td colspan="7" style="padding: 12px;">
+                                Pulsa «Actualizar pedidos» para consultar la lista.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+        
         <button class="btn-cerrar" onclick="cerrarSesion()">
             Cerrar sesión
         </button>
@@ -484,7 +614,244 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             }
 
         }
-            
+         
+         // Mostrar los pedidos recibidos por el comercio
+        async function mostrarPedidosComercio() {
+            document.getElementById("panelComercio").style.display = "none";
+            document.getElementById("pedidosComercio").style.display = "block";
+
+            await cargarPedidosComercio();
+        }
+
+        // Volver al panel del comercio
+        function volverPanelComercio() {
+            document.getElementById("pedidosComercio").style.display = "none";
+            document.getElementById("panelComercio").style.display = "grid";
+        }
+
+        // Consultar pedidos asociados al comercio
+        async function cargarPedidosComercio() {
+            const tabla = document.getElementById("tablaPedidosComercio");
+            const mensaje = document.getElementById("mensajePedidosComercio");
+            const comercioId = sessionStorage.getItem("idUsuario");
+            const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando pedidos...";
+
+            if (!comercioId || rolActual !== "COMERCIO") {
+                mensaje.textContent = "Debes iniciar sesión con una cuenta de comercio.";
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(
+                    "/api/pedidos/comercio/" + encodeURIComponent(comercioId)
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los pedidos del comercio.");
+                }
+
+                const pedidos = await respuesta.json();
+
+                if (pedidos.length === 0) {
+                    mensaje.textContent = "Todavía no has recibido pedidos.";
+                    return;
+                }
+
+                pedidos.forEach(function(pedido) {
+                    const fila = document.createElement("tr");
+                
+                    [
+                        pedido.id,
+                        pedido.descripcion,
+                        pedido.peso,
+                        pedido.direccionRecogida,
+                        pedido.direccionEntrega,
+                        pedido.estado
+                    ].forEach(function(dato) {
+                        const celda = document.createElement("td");
+                        celda.style.padding = "12px";
+                        celda.style.borderBottom = "1px solid #e5e7eb";
+                        celda.textContent = dato ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = "Pedidos recibidos: " + pedidos.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                    error.message || "Ocurrió un error al cargar los pedidos.";
+                console.error(error);
+            }
+        }
+    
+        // Abrir la gestión de pedidos del administrador
+async function mostrarGestionPedidos() {
+    document.getElementById("panelAdmin").style.display = "none";
+    document.getElementById("gestionPedidosAdmin").style.display = "block";
+
+    await cargarPedidosAdmin();
+}
+
+// Regresar al panel del administrador
+function volverPanelAdminPedidos() {
+    document.getElementById("gestionPedidosAdmin").style.display = "none";
+    document.getElementById("panelAdmin").style.display = "grid";
+}
+
+// Consultar pedidos y repartidores
+async function cargarPedidosAdmin() {
+    const tabla = document.getElementById("tablaPedidosAdmin");
+    const mensaje = document.getElementById("mensajePedidosAdmin");
+    const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+    tabla.replaceChildren();
+
+    if (rolActual !== "ADMIN") {
+        mensaje.textContent = "Solo el administrador puede gestionar los pedidos.";
+        return;
+    }
+
+    mensaje.textContent = "Cargando pedidos y repartidores...";
+
+    try {
+        const [respuestaPedidos, respuestaUsuarios] = await Promise.all([
+            fetch("/api/pedidos"),
+            fetch("/api/usuarios")
+        ]);
+
+        if (!respuestaPedidos.ok || !respuestaUsuarios.ok) {
+            throw new Error("No se pudieron cargar los pedidos o los usuarios.");
+        }
+
+        const pedidos = await respuestaPedidos.json();
+        const usuarios = await respuestaUsuarios.json();
+
+        const repartidores = usuarios.filter(function(usuario) {
+            return (usuario.rol || "").toUpperCase() === "REPARTIDOR";
+        });
+
+        if (pedidos.length === 0) {
+            mensaje.textContent = "No hay pedidos registrados.";
+            return;
+        }
+
+        pedidos.forEach(function(pedido) {
+            const fila = document.createElement("tr");
+
+            [
+                pedido.id,
+                pedido.descripcion,
+                pedido.peso,
+                pedido.direccionRecogida,
+                pedido.direccionEntrega,
+                pedido.estado
+            ].forEach(function(dato) {
+                const celda = document.createElement("td");
+                celda.style.padding = "12px";
+                celda.style.borderBottom = "1px solid #e5e7eb";
+                celda.textContent = dato ?? "";
+                fila.appendChild(celda);
+            });
+
+            const celdaRepartidor = document.createElement("td");
+            celdaRepartidor.style.padding = "12px";
+
+            const selector = document.createElement("select");
+            selector.id = "repartidorPedido" + pedido.id;
+            selector.style.padding = "8px";
+
+            const opcionInicial = document.createElement("option");
+            opcionInicial.value = "";
+            opcionInicial.textContent = "Seleccionar";
+            selector.appendChild(opcionInicial);
+
+            repartidores.forEach(function(repartidor) {
+                const opcion = document.createElement("option");
+                opcion.value = repartidor.id;
+                opcion.textContent = repartidor.nombre;
+                selector.appendChild(opcion);
+            });
+
+            celdaRepartidor.appendChild(selector);
+            fila.appendChild(celdaRepartidor);
+
+            const celdaAccion = document.createElement("td");
+            celdaAccion.style.padding = "12px";
+
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.textContent = "Asignar";
+            boton.disabled = pedido.estado === "ENTREGADO"
+                    || repartidores.length === 0;
+
+            boton.addEventListener("click", function() {
+                asignarRepartidorAdmin(
+                    pedido.id,
+                    selector.value
+                );
+            });
+
+            celdaAccion.appendChild(boton);
+            fila.appendChild(celdaAccion);
+            tabla.appendChild(fila);
+        });
+
+        mensaje.textContent = "Pedidos encontrados: " + pedidos.length
+                + ". Repartidores disponibles: " + repartidores.length + ".";
+
+    } catch (error) {
+        mensaje.textContent = error.message
+                || "Error al consultar los pedidos.";
+        console.error(error);
+    }
+}
+
+// Asignar un pedido a un repartidor
+async function asignarRepartidorAdmin(pedidoId, repartidorId) {
+    const mensaje = document.getElementById("mensajePedidosAdmin");
+
+    if (!repartidorId) {
+        mensaje.textContent = "Selecciona un repartidor antes de asignar.";
+        return;
+    }
+
+    mensaje.textContent = "Asignando el pedido #" + pedidoId + "...";
+
+    try {
+        const parametros = new URLSearchParams({
+            repartidorId: repartidorId
+        });
+
+        const respuesta = await fetch(
+            "/api/pedidos/" + encodeURIComponent(pedidoId)
+            + "/asignar-repartidor?" + parametros.toString(),
+            { method: "PATCH" }
+        );
+
+        const resultado = await respuesta.text();
+
+        if (!respuesta.ok) {
+            throw new Error(resultado || "No se pudo asignar el repartidor.");
+        }
+
+        mensaje.textContent = "Pedido #" + pedidoId
+                + " asignado correctamente.";
+
+        await cargarPedidosAdmin();
+
+    } catch (error) {
+        mensaje.textContent = error.message
+                || "Ocurrió un error al asignar el repartidor.";
+        console.error(error);
+    }
+}
+    
         async function mostrarGestionUsuarios() {
             document.getElementById("panelAdmin").style.display = "none";
             document.getElementById("gestionUsuarios").style.display = "block";
@@ -809,6 +1176,138 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             }
         }
 
+        // Mostrar la pantalla de pedidos disponibles
+        async function mostrarPedidosDisponibles() {
+            document.getElementById("panelRepartidor").style.display = "none";
+            document.getElementById("pedidosDisponibles").style.display = "block";
+
+        await cargarPedidosDisponibles();
+        }
+
+        // Regresar al panel del repartidor
+        function volverPanelRepartidorDisponibles() {
+            document.getElementById("pedidosDisponibles").style.display = "none";
+            document.getElementById("panelRepartidor").style.display = "grid";
+        }
+
+        // Consultar los pedidos que todavía se pueden aceptar
+        async function cargarPedidosDisponibles() {
+            const tabla = document.getElementById("tablaPedidosDisponibles");
+            const mensaje = document.getElementById("mensajePedidosDisponibles");
+            const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+        tabla.replaceChildren();
+
+            if (rolActual !== "REPARTIDOR" || !sessionStorage.getItem("idUsuario")) {
+                mensaje.textContent = "Debes iniciar sesión como repartidor.";
+                return;
+            }
+
+        mensaje.textContent = "Consultando pedidos disponibles...";
+
+            try {
+                const respuesta = await fetch("/api/pedidos/disponibles");
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los pedidos disponibles.");
+                }
+
+        const pedidos = await respuesta.json();
+
+        if (!Array.isArray(pedidos) || pedidos.length === 0) {
+            mensaje.textContent = "Por ahora no hay pedidos disponibles.";
+            return;
+        }
+
+        pedidos.forEach(function(pedido) {
+            const fila = document.createElement("tr");
+
+            [
+                pedido.id,
+                pedido.descripcion,
+                pedido.peso,
+                pedido.direccionRecogida,
+                pedido.direccionEntrega,
+                pedido.estado
+            ].forEach(function(dato) {
+                const celda = document.createElement("td");
+                celda.style.padding = "12px";
+                celda.style.borderBottom = "1px solid #e5e7eb";
+                celda.textContent = dato ?? "";
+                fila.appendChild(celda);
+            });
+
+            const celdaAccion = document.createElement("td");
+            celdaAccion.style.padding = "12px";
+
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.textContent = "Aceptar pedido";
+
+            boton.addEventListener("click", function() {
+                aceptarPedidoDisponible(pedido.id, boton);
+            });
+
+            celdaAccion.appendChild(boton);
+            fila.appendChild(celdaAccion);
+            tabla.appendChild(fila);
+        });
+
+        mensaje.textContent = "Pedidos disponibles: " + pedidos.length;
+
+    } catch (error) {
+        mensaje.textContent =
+            error.message || "Ocurrió un error al consultar los pedidos.";
+        console.error(error);
+    }
+}
+
+// Aceptar un pedido como repartidor
+async function aceptarPedidoDisponible(pedidoId, boton) {
+    const repartidorId = sessionStorage.getItem("idUsuario");
+    const mensaje = document.getElementById("mensajePedidosDisponibles");
+
+    if (!repartidorId ||
+        (sessionStorage.getItem("rol") || "").toUpperCase() !== "REPARTIDOR") {
+        mensaje.textContent = "Tu sesión de repartidor no es válida.";
+        return;
+    }
+
+    boton.disabled = true;
+    boton.textContent = "Aceptando...";
+    mensaje.textContent = "Intentando aceptar el pedido #" + pedidoId + "...";
+
+    try {
+        const parametros = new URLSearchParams({
+            repartidorId: repartidorId
+        });
+
+        const respuesta = await fetch(
+            "/api/pedidos/" + encodeURIComponent(pedidoId)
+            + "/aceptar?" + parametros.toString(),
+            { method: "PATCH" }
+        );
+
+        const resultado = await respuesta.text();
+
+        if (!respuesta.ok) {
+            throw new Error(resultado || "No se pudo aceptar el pedido.");
+        }
+
+        mensaje.textContent =
+            "¡Pedido #" + pedidoId + " aceptado! Ya aparece en Mis entregas.";
+
+        await cargarPedidosDisponibles();
+
+    } catch (error) {
+        mensaje.textContent =
+            error.message || "Ocurrió un error al aceptar el pedido.";
+        console.error(error);
+
+        boton.disabled = false;
+        boton.textContent = "Aceptar pedido";
+    }
+}
         
         async function mostrarMisEntregas() {
             document.getElementById("panelRepartidor").style.display = "none";

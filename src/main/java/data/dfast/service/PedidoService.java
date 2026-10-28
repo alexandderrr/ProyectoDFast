@@ -21,6 +21,7 @@ import java.util.Optional;
 import data.dfast.dto.PedidoRespuestaDTO;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PedidoService {
@@ -62,6 +63,21 @@ public class PedidoService {
         return pedidoRepository.save(nuevoPedido);
     }
           
+    // Consultar todos los pedidos para la administración
+    public List<PedidoRespuestaDTO> listarTodosLosPedidos() {
+        return pedidoRepository.findAll()
+                .stream()
+                .map(pedido -> new PedidoRespuestaDTO(
+                pedido.getId(),
+                pedido.getDescripcion(),
+                pedido.getPeso(),
+                pedido.getDireccionRecogida(),
+                pedido.getDireccionEntrega(),
+                pedido.getEstado()
+        ))
+                .collect(Collectors.toList());
+    }
+    
     public List<PedidoRespuestaDTO> listarPedidosPorCliente(Long clienteId) {
         return pedidoRepository.findByClienteId(clienteId)
             .stream()
@@ -101,6 +117,55 @@ public class PedidoService {
                 .collect(Collectors.toList());
     }
 
+    // Consultar pedidos disponibles para los repartidores
+    public List<PedidoRespuestaDTO> listarPedidosDisponibles() {
+        return pedidoRepository.findByRepartidorIsNullAndEstado("PENDIENTE")
+                .stream()
+                .map(pedido -> new PedidoRespuestaDTO(
+                pedido.getId(),
+                pedido.getDescripcion(),
+                pedido.getPeso(),
+                pedido.getDireccionRecogida(),
+                pedido.getDireccionEntrega(),
+                pedido.getEstado()
+        ))
+                .collect(Collectors.toList());
+    }
+
+// Permitir que un repartidor acepte un pedido disponible
+    @Transactional
+    public PedidoRespuestaDTO aceptarPedido(Long pedidoId, Long repartidorId) {
+        Usuario repartidor = usuarioRepository.findById(repartidorId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                "El repartidor no existe."));
+
+        if (!"REPARTIDOR".equalsIgnoreCase(repartidor.getRol())) {
+            throw new IllegalArgumentException(
+                    "Solo un repartidor puede aceptar pedidos.");
+        }
+
+        int filasActualizadas = pedidoRepository.asignarSiDisponible(
+                pedidoId, repartidor);
+
+        if (filasActualizadas == 0) {
+            throw new IllegalArgumentException(
+                    "Este pedido ya no está disponible. Actualiza la lista.");
+        }
+
+        Pedido actualizado = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                "El pedido no existe."));
+
+        return new PedidoRespuestaDTO(
+                actualizado.getId(),
+                actualizado.getDescripcion(),
+                actualizado.getPeso(),
+                actualizado.getDireccionRecogida(),
+                actualizado.getDireccionEntrega(),
+                actualizado.getEstado()
+        );
+    }
+    
         // Consultar los pedidos asignados a un repartidor
     public List<PedidoRespuestaDTO> listarPedidosPorRepartidor(
             Long repartidorId) {
