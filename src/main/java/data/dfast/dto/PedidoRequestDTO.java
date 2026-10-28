@@ -14,6 +14,7 @@ public class PedidoRequestDTO {
     private String direccionRecogida;
     private String direccionEntrega;
     private Long clienteId;
+    private Long comercioId;
 
     // Getters y Setters
     public String getDescripcion() { return descripcion; }
@@ -30,4 +31,7 @@ public class PedidoRequestDTO {
 
     public Long getClienteId() { return clienteId; }
     public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
+    
+    public Long getComercioId() { return comercioId; }
+    public void setComercioId(Long comercioId) { this.comercioId = comercioId; }
 }

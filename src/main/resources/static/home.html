@@ -299,6 +299,13 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                        placeholder="Ej. Paquete de documentos"
                        style="display: block; width: 100%; padding: 12px;
                   margin: 8px 0 16px;">
+                
+                <label for="comercioPedido">Selecciona el comercio</label>
+                <select id="comercioPedido" required
+                        style="display: block; width: 100%; padding: 12px;
+                        margin: 8px 0 16px;">
+                    <option value="">Cargando comercios...</option>
+                </select>
 
                 <label for="pesoPedido">Peso (kg)</label>
                 <input id="pesoPedido" type="number" required min="0.01" step="0.01"
@@ -540,11 +547,60 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             document.getElementById("misPedidos").style.display = "block";
 
         await cargarMisPedidos();
+        await cargarComercios();
         }
 
         function volverAlPanelCliente() {
             document.getElementById("misPedidos").style.display = "none";
             document.getElementById("panelCliente").style.display = "grid";
+        }
+        
+        // Cargar los comercios disponibles
+        async function cargarComercios() {
+            const selector = document.getElementById("comercioPedido");
+
+            selector.replaceChildren();
+
+            const opcionInicial = document.createElement("option");
+            opcionInicial.value = "";
+            opcionInicial.textContent = "Selecciona un comercio";
+            selector.appendChild(opcionInicial);
+
+            try {
+                const respuesta = await fetch("/api/usuarios");
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los usuarios.");
+                }
+
+                const usuarios = await respuesta.json();
+
+                const comercios = usuarios.filter(function(usuario) {
+                    return (usuario.rol || "").toUpperCase() === "COMERCIO";
+                });
+
+                if (comercios.length === 0) {
+                    opcionInicial.textContent = "No hay comercios registrados";
+                    return;
+                }
+
+                comercios.forEach(function(comercio) {
+                    const opcion = document.createElement("option");
+                    opcion.value = comercio.id;
+                    opcion.textContent = comercio.nombre;
+                    selector.appendChild(opcion);
+                });
+
+            } catch (error) {
+                selector.replaceChildren();
+
+                const opcionError = document.createElement("option");
+                opcionError.value = "";
+                opcionError.textContent = "Error al cargar comercios";
+                selector.appendChild(opcionError);
+
+                console.error(error);
+            }
         }
 
         async function cargarMisPedidos() {
@@ -621,6 +677,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 mensaje.textContent = "Debes iniciar sesión con una cuenta de cliente.";
                 return;
         }
+        
+            if (!document.getElementById("comercioPedido").value) {
+                mensaje.textContent = "Selecciona un comercio.";
+                return;
+            }
 
             const peso = Number(document.getElementById("pesoPedido").value);
 
@@ -634,8 +695,9 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                 peso: peso,
                 direccionRecogida: document.getElementById("recogidaPedido").value.trim(),
                 direccionEntrega: document.getElementById("entregaPedido").value.trim(),
-                clienteId: Number(idUsuario)
-        };
+                clienteId: Number(idUsuario),
+                comercioId: Number(document.getElementById("comercioPedido").value)
+            };
 
             if (!pedido.descripcion || !pedido.direccionRecogida || !pedido.direccionEntrega) {
                 mensaje.textContent = "Completa todos los campos.";

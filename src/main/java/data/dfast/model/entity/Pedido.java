@@ -43,6 +43,11 @@ public class Pedido {
     @ManyToOne
     @JoinColumn(name = "repartidor_id")
     private Usuario repartidor;
+    
+    // Relación comercio
+    @ManyToOne
+    @JoinColumn(name = "comercio_id")
+    private Usuario comercio;
 
     // --- Getters y Setters ---
     public Long getId() { return id; }
@@ -68,4 +73,7 @@ public class Pedido {
 
     public Usuario getRepartidor() { return repartidor; }
     public void setRepartidor(Usuario repartidor) { this.repartidor = repartidor; }
+    
+    public Usuario getComercio() { return comercio; }
+    public void setComercio(Usuario comercio) { this.comercio = comercio; }
 }

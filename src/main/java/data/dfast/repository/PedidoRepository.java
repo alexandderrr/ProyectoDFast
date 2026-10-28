@@ -19,4 +19,5 @@ public interface PedidoRepository extends JpaRepository<Pedido, Long> {
     List<Pedido> findByClienteId(Long clienteId);
     List<Pedido> findByRepartidorId(Long repartidorId);
     List<Pedido> findByEstado(String estado);
+    List<Pedido> findByComercioId(Long comercioId);
 }

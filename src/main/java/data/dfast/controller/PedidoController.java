@@ -61,6 +61,19 @@ public class PedidoController {
                         + guardado.getId()
         );
     }
+    
+    // Consultar los pedidos recibidos por un comercio
+    @GetMapping("/comercio/{comercioId}")
+    public ResponseEntity<?> listarPedidosPorComercio(
+            @PathVariable Long comercioId) {
+
+        try {
+            return ResponseEntity.ok(
+                    pedidoService.listarPedidosPorComercio(comercioId));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
       
     @GetMapping("/cliente/{clienteId}")
         public ResponseEntity<List<PedidoRespuestaDTO>> listarPedidosPorCliente(

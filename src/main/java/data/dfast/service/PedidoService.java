@@ -45,6 +45,20 @@ public class PedidoService {
         nuevoPedido.setDireccionEntrega(request.getDireccionEntrega());
         nuevoPedido.setCliente(cliente);
 
+        if (request.getComercioId() != null) {
+
+            Usuario comercio = usuarioRepository.findById(request.getComercioId())
+                    .orElseThrow(() -> new IllegalArgumentException(
+                    "El comercio indicado no existe."));
+
+            if (!"COMERCIO".equalsIgnoreCase(comercio.getRol())) {
+                throw new IllegalArgumentException(
+                        "El usuario indicado no tiene el rol COMERCIO.");
+            }
+
+            nuevoPedido.setComercio(comercio);
+        }
+
         return pedidoRepository.save(nuevoPedido);
     }
           
@@ -61,6 +75,31 @@ public class PedidoService {
             ))
             .collect(Collectors.toList());
 }
+    
+    // Consultar los pedidos recibidos por un comercio
+    public List<PedidoRespuestaDTO> listarPedidosPorComercio(Long comercioId) {
+
+        Usuario comercio = usuarioRepository.findById(comercioId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                "El comercio no existe."));
+
+        if (!"COMERCIO".equalsIgnoreCase(comercio.getRol())) {
+            throw new IllegalArgumentException(
+                    "El usuario indicado no tiene el rol COMERCIO.");
+        }
+
+        return pedidoRepository.findByComercioId(comercioId)
+                .stream()
+                .map(pedido -> new PedidoRespuestaDTO(
+                pedido.getId(),
+                pedido.getDescripcion(),
+                pedido.getPeso(),
+                pedido.getDireccionRecogida(),
+                pedido.getDireccionEntrega(),
+                pedido.getEstado()
+        ))
+                .collect(Collectors.toList());
+    }
 
         // Consultar los pedidos asignados a un repartidor
     public List<PedidoRespuestaDTO> listarPedidosPorRepartidor(
