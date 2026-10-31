@@ -8,6 +8,10 @@ public class PedidoRequestDTO {
     private Double peso;
     private String direccionRecogida;
     private String direccionEntrega;
+    private Double latitudRecogida;
+    private Double longitudRecogida;
+    private Double latitudEntrega;
+    private Double longitudEntrega;
     private Long clienteId;
     private Long comercioId;
 
@@ -34,6 +38,18 @@ public class PedidoRequestDTO {
 
     public String getDireccionEntrega() { return direccionEntrega; }
     public void setDireccionEntrega(String direccionEntrega) { this.direccionEntrega = direccionEntrega; }
+
+    public Double getLatitudRecogida() { return latitudRecogida; }
+    public void setLatitudRecogida(Double latitudRecogida) { this.latitudRecogida = latitudRecogida; }
+
+    public Double getLongitudRecogida() { return longitudRecogida; }
+    public void setLongitudRecogida(Double longitudRecogida) { this.longitudRecogida = longitudRecogida; }
+
+    public Double getLatitudEntrega() { return latitudEntrega; }
+    public void setLatitudEntrega(Double latitudEntrega) { this.latitudEntrega = latitudEntrega; }
+
+    public Double getLongitudEntrega() { return longitudEntrega; }
+    public void setLongitudEntrega(Double longitudEntrega) { this.longitudEntrega = longitudEntrega; }
 
     public Long getClienteId() { return clienteId; }
     public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
