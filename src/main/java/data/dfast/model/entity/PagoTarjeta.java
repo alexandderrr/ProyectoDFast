@@ -10,7 +10,7 @@ public class PagoTarjeta extends Pago {
     @Column(name = "titular_tarjeta", length = 100)
     private String titularTarjeta;
 
-    @Column(name = "ultimos cuatro", length = 4)
+    @Column(name = "ultimos_cuatro", length = 4)
     private String ultimosCuatro;
 
     public String getTitularTarjeta() { return titularTarjeta; }
