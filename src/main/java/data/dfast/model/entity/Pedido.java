@@ -27,6 +27,18 @@ public class Pedido implements Rastreable {
     @Column(name = "direccion_entrega", nullable = false)
     private String direccionEntrega;
 
+    @Column(name = "latitud_recogida")
+    private Double latitudRecogida;
+
+    @Column(name = "longitud_recogida")
+    private Double longitudRecogida;
+
+    @Column(name = "latitud_entrega")
+    private Double latitudEntrega;
+
+    @Column(name = "longitud_entrega")
+    private Double longitudEntrega;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoPedido estado = EstadoPedido.CREADO;
@@ -91,6 +103,18 @@ public class Pedido implements Rastreable {
 
     public String getDireccionEntrega() { return direccionEntrega; }
     public void setDireccionEntrega(String direccionEntrega) { this.direccionEntrega = direccionEntrega; }
+
+    public Double getLatitudRecogida() { return latitudRecogida; }
+    public void setLatitudRecogida(Double latitudRecogida) { this.latitudRecogida = latitudRecogida; }
+
+    public Double getLongitudRecogida() { return longitudRecogida; }
+    public void setLongitudRecogida(Double longitudRecogida) { this.longitudRecogida = longitudRecogida; }
+
+    public Double getLatitudEntrega() { return latitudEntrega; }
+    public void setLatitudEntrega(Double latitudEntrega) { this.latitudEntrega = latitudEntrega; }
+
+    public Double getLongitudEntrega() { return longitudEntrega; }
+    public void setLongitudEntrega(Double longitudEntrega) { this.longitudEntrega = longitudEntrega; }
 
     public EstadoPedido getEstado() { return estado; }
     public void setEstado(EstadoPedido estado) { this.estado = estado; }
