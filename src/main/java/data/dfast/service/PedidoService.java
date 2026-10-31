@@ -75,6 +75,10 @@ public class PedidoService {
         Pedido nuevoPedido = new Pedido();
         nuevoPedido.setDireccionRecogida(request.getDireccionRecogida());
         nuevoPedido.setDireccionEntrega(request.getDireccionEntrega());
+        nuevoPedido.setLatitudRecogida(request.getLatitudRecogida());
+        nuevoPedido.setLongitudRecogida(request.getLongitudRecogida());
+        nuevoPedido.setLatitudEntrega(request.getLatitudEntrega());
+        nuevoPedido.setLongitudEntrega(request.getLongitudEntrega());
         nuevoPedido.setCliente(cliente);
 
         Usuario comercio = null;
