@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>D-Fast</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 900px;
+            background: white;
+            border-radius: 20px;
+            padding: 60px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .logo {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 42px;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+
+        .subtitulo {
+            color: #6b7280;
+            font-size: 18px;
+            margin-bottom: 40px;
+        }
+
+        .botones {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-login {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-registro {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .descripcion {
+            margin-top: 40px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="contenedor">
+
+        <div class="logo">🚚</div>
+
+        <h1>D-Fast</h1>
+
+        <p class="subtitulo">
+            Sistema inteligente de gestión de pedidos y entregas
+        </p>
+
+        <div class="botones">
+
+            <button class="btn-login"
+                    onclick="window.location.href='login.html'">
+                Iniciar sesión
+            </button>
+
+            <button class="btn-registro"
+                    onclick="window.location.href='registro.html'">
+                Registrarse
+            </button>
+
+        </div>
+
+        <p class="descripcion">
+            Plataforma para clientes, comercios y repartidores.
+        </p>
+
+    </div>
+
+</body>
+</html>

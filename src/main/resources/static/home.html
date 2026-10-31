@@ -1,0 +1,2342 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Inicio - D-Fast</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+            min-height: 100vh;
+        }
+
+        header {
+            background: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .usuario {
+            color: #374151;
+        }
+
+        .contenedor {
+            width: 90%;
+            max-width: 1100px;
+            margin: 50px auto;
+        }
+
+        h1 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .bienvenida {
+            color: #6b7280;
+            margin-bottom: 35px;
+        }
+
+        .tarjetas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .tarjeta {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .tarjeta:hover {
+            transform: translateY(-4px);
+        }
+
+        .icono {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .tarjeta h2 {
+            color: #1f2937;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .tarjeta p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .btn-cerrar {
+            margin-top: 40px;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #dc2626;
+            color: white;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .btn-cerrar:hover {
+            opacity: 0.9;
+        }
+
+
+        /* ----- Paso 2: tablas y formularios nuevos ----- */
+        .tabla-d {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .tabla-d th {
+            padding: 12px;
+        }
+
+        .form-d {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0 25px;
+        }
+
+        .campo-d {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0 16px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <header>
+
+        <div class="logo">
+            🚚 D-Fast
+        </div>
+
+        <div class="usuario">
+             Hola, <strong id="nombreUsuario"></strong>
+             <span id="rolUsuario"></span>
+        </div>
+
+    </header>
+
+
+    <div class="contenedor">
+
+        <h1 id="saludoUsuario">Bienvenido a D-Fast 👋</h1>
+
+        <p class="bienvenida">
+            Selecciona una opción para continuar.
+        </p>
+
+
+        
+    <div class="tarjetas" id="panelCliente">
+
+        <div class="tarjeta" onclick="mostrarComercios()">
+            <div class="icono">🛒</div>
+            <h2>Comercios</h2>
+            <p>Consulta los comercios, sus productos y haz tu pedido.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarMisPedidos()">
+            <div class="icono">📦</div>
+            <h2>Mis pedidos</h2>
+            <p>Consulta y administra tus pedidos.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarSeguimiento()">
+            <div class="icono">🚚</div>
+            <h2>Seguimiento</h2>
+            <p>Consulta el estado de tus entregas.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarCalificaciones()">
+            <div class="icono">⭐</div>
+            <h2>Calificaciones</h2>
+            <p>Consulta y realiza calificaciones.</p>
+        </div>
+
+    </div>
+
+    <div class="tarjetas" id="panelAdmin" style="display: none;">
+
+        <div class="tarjeta" onclick="mostrarGestionUsuarios()">
+            <div class="icono">👥</div>
+            <h2>Gestión de usuarios</h2>
+            <p>Consulta los usuarios registrados en D-Fast.</p>
+        </div>
+        
+        <div class="tarjeta" onclick="mostrarGestionPedidos()">
+            <div class="icono">📦</div>
+            <h2>Gestión de pedidos</h2>
+            <p>Consulta pedidos y asigna repartidores.</p>
+        </div>
+        
+        <div class="tarjeta" onclick="mostrarAdminComercios()">
+            <div class="icono">🏪</div>
+            <h2>Gestión de comercios</h2>
+            <p>Consulta los comercios y administra las promociones.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarPanelGeneral()">
+            <div class="icono">📊</div>
+            <h2>Panel general</h2>
+            <p>Consulta el resumen general de pedidos, ventas y usuarios.</p>
+        </div>
+    </div>
+        
+        <div class="tarjetas" id="panelComercio" style="display: none;">
+
+        <div class="tarjeta" onclick="mostrarMiComercio()">
+            <div class="icono">🏪</div>
+            <h2>Mi comercio</h2>
+            <p>Administra tus productos, precios y disponibilidad.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarPedidosComercio()">
+            <div class="icono">📦</div>
+            <h2>Pedidos recibidos</h2>
+            <p>Consulta los pedidos que han realizado a tu comercio.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarResumenComercio()">
+            <div class="icono">📊</div>
+            <h2>Resumen de actividad</h2>
+            <p>Consulta tus pedidos y ventas.</p>
+        </div>
+
+    </div>
+
+    <div class="tarjetas" id="panelRepartidor" style="display: none;">
+        
+        <div class="tarjeta" onclick="mostrarPedidosDisponibles()">
+            <div class="icono">📦</div>
+            <h2>Pedidos disponibles</h2>
+            <p>Consulta y acepta pedidos que todavía no tienen repartidor.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarMisEntregas()">
+            <div class="icono">🚚</div>
+            <h2>Mis entregas</h2>
+            <p>Prepara la consulta de entregas asignadas.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarMisEntregas()">
+            <div class="icono">📍</div>
+            <h2>Seguimiento</h2>
+            <p>Actualiza el estado de tus entregas.</p>
+        </div>
+
+        <div class="tarjeta" onclick="mostrarHistorialEntregas()">
+            <div class="icono">🗂️</div>
+            <h2>Historial de entregas</h2>
+            <p>Consulta tus entregas anteriores.</p>
+        </div>
+
+    </div>
+        
+        
+        <section id="gestionUsuarios" style="display: none; margin-top: 30px;">
+
+            <h2>Gestión de usuarios</h2>
+            <p>Usuarios registrados en D-Fast.</p>
+
+            <button type="button" onclick="cargarUsuarios()">
+                Actualizar lista
+            </button>
+
+            <button type="button" onclick="volverAlPanel()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeUsuarios"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                              border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Nombre</th>
+                            <th style="padding: 12px;">Correo</th>
+                            <th style="padding: 12px;">Rol</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaUsuarios">
+                        <tr>
+                            <td colspan="4" style="padding: 12px;">
+                                Pulsa «Actualizar lista» para consultar los usuarios.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+        
+        <section id="gestionPedidosAdmin"
+                 style="display: none; margin-top: 30px;">
+
+            <h2>Gestión de pedidos</h2>
+
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta todos los pedidos y asigna un repartidor a cada uno.
+            </p>
+
+            <button type="button" onclick="cargarPedidosAdmin()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverPanelAdminPedidos()">
+                Volver al panel
+            </button>
+
+            <p id="mensajePedidosAdmin" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Repartidor</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidosAdmin"></tbody>
+                </table>
+            </div>
+
+        </section>
+        
+        <section id="pedidosComercio" style="display: none; margin-top: 30px;">
+
+            <h2>Pedidos recibidos</h2>
+
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta los pedidos que los clientes han realizado a tu comercio.
+            </p>
+
+            <button type="button" onclick="cargarPedidosComercio()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverPanelComercio()">
+                Volver al panel
+            </button>
+
+            <p id="mensajePedidosComercio" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidosComercio"></tbody>
+                </table>
+            </div>
+
+        </section>
+
+        <section id="misPedidos" style="display: none; margin-top: 30px;">
+
+            <h2>Mis pedidos</h2>
+            <p>Consulta el estado y los detalles de tus pedidos.</p>
+            
+
+            <h3 style="margin: 24px 0 15px;">Crear un pedido</h3>
+
+            <form id="formPedido" style="background: white; padding: 20px;
+            border-radius: 12px; margin-bottom: 25px;">
+
+                <div id="bloqueDescripcion"><label for="descripcionPedido">Descripción del pedido</label>
+                <input id="descripcionPedido" type="text" required maxlength="200"
+                       placeholder="Ej. Paquete de documentos"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;"></div>
+                
+                <label for="comercioPedido">Selecciona el comercio</label>
+                <select id="comercioPedido" required
+                        style="display: block; width: 100%; padding: 12px;
+                        margin: 8px 0 16px;">
+                    <option value="">Cargando comercios...</option>
+                </select>
+
+                <div id="bloqueProductos" style="display: none;">
+                    <label>Productos del comercio</label>
+                    <div id="listaProductos" style="margin: 8px 0 12px;"></div>
+                    <p id="resumenPedido" style="margin-bottom: 16px; font-weight: bold;"></p>
+                </div>
+
+                <div id="bloquePeso"><label for="pesoPedido">Peso (kg)</label>
+                <input id="pesoPedido" type="number" required min="0.01" step="0.01"
+                       placeholder="Ej. 2.5"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;"></div>
+
+                <div id="bloqueRecogida"><label for="recogidaPedido">Dirección de recogida</label>
+                <input id="recogidaPedido" type="text" required maxlength="250"
+                       placeholder="¿Dónde recoger el paquete?"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;"></div>
+
+                <label for="entregaPedido">Dirección de entrega</label>
+                <input id="entregaPedido" type="text" required maxlength="250"
+                       placeholder="¿Dónde entregar el paquete?"
+                       style="display: block; width: 100%; padding: 12px;
+                  margin: 8px 0 16px;">
+
+                <label for="promoPedido">Código de promoción (opcional)</label>
+                <input id="promoPedido" type="text" maxlength="30" class="campo-d"
+                       placeholder="Ej. BIENVENIDO10">
+
+                <label for="metodoPagoPedido">Método de pago</label>
+                <select id="metodoPagoPedido" class="campo-d">
+                    <option value="EFECTIVO">Efectivo (se paga al recibir)</option>
+                    <option value="TARJETA">Tarjeta</option>
+                    <option value="TRANSFERENCIA">Transferencia</option>
+                </select>
+
+                <div id="camposTarjeta" style="display: none;">
+                    <label for="titularTarjeta">Titular de la tarjeta</label>
+                    <input id="titularTarjeta" type="text" maxlength="60" class="campo-d">
+                    <label for="numeroTarjeta">Número de tarjeta</label>
+                    <input id="numeroTarjeta" type="text" inputmode="numeric" maxlength="23"
+                           class="campo-d" placeholder="Ej. 4111 1111 1111 1111">
+                    <label for="vencimientoTarjeta">Vencimiento (MM/AA)</label>
+                    <input id="vencimientoTarjeta" type="text" maxlength="5" class="campo-d"
+                           placeholder="Ej. 12/30">
+                    <label for="cvvTarjeta">CVV</label>
+                    <input id="cvvTarjeta" type="password" inputmode="numeric" maxlength="4"
+                           class="campo-d" autocomplete="off">
+                </div>
+
+                <div id="camposTransferencia" style="display: none;">
+                    <label for="referenciaTransferencia">Referencia de la transferencia</label>
+                    <input id="referenciaTransferencia" type="text" maxlength="40" class="campo-d"
+                           placeholder="Mínimo 6 letras o números">
+                </div>
+
+                <button type="submit" id="btnCrearPedido">
+                    Registrar pedido
+                </button>
+
+                <p id="mensajeCrearPedido" style="margin-top: 12px;"></p>
+            </form>
+
+            <button type="button" onclick="cargarMisPedidos()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverAlPanelCliente()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeMisPedidos" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Total</th>
+                            <th style="padding: 12px;">Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaMisPedidos"></tbody>
+                </table>
+            </div>
+
+        </section>
+        
+
+        <section id="seccionSeguimiento" style="display: none; margin-top: 30px;">
+
+            <h2>Seguimiento de mis pedidos</h2>
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta el estado actual de tus entregas.
+            </p>
+
+            <button type="button" onclick="cargarSeguimiento()">
+                Actualizar seguimiento
+            </button>
+
+            <button type="button" onclick="volverDelSeguimiento()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeSeguimiento" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">Pedido</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Dirección de entrega</th>
+                            <th style="padding: 12px;">Estado actual</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaSeguimiento"></tbody>
+                </table>
+            </div>
+
+        </section>
+        
+
+        <section id="seccionEntregas"
+                 style="display: none; margin-top: 30px;">
+
+            <h2>Mis entregas</h2>
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Consulta tus pedidos asignados y actualiza su estado.
+            </p>
+
+            <button type="button" onclick="cargarMisEntregas()">
+                Actualizar entregas
+            </button>
+
+            <button type="button" onclick="volverPanelRepartidor()">
+                Volver al panel
+            </button>
+
+            <p id="mensajeEntregas" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                       border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaEntregas"></tbody>
+                </table>
+            </div>
+        </section>
+        
+        <section id="pedidosDisponibles"
+                 style="display: none; margin-top: 30px;">
+
+            <h2>Pedidos disponibles</h2>
+
+            <p style="margin: 10px 0 20px; color: #6b7280;">
+                Estos pedidos todavía no tienen un repartidor asignado.
+            </p>
+
+            <button type="button" onclick="cargarPedidosDisponibles()">
+                Actualizar pedidos
+            </button>
+
+            <button type="button" onclick="volverPanelRepartidorDisponibles()">
+                Volver al panel
+            </button>
+
+            <p id="mensajePedidosDisponibles" style="margin-top: 15px;"></p>
+
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table style="width: 100%; background: white;
+                      border-collapse: collapse; text-align: left;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 12px;">ID</th>
+                            <th style="padding: 12px;">Descripción</th>
+                            <th style="padding: 12px;">Peso</th>
+                            <th style="padding: 12px;">Recogida</th>
+                            <th style="padding: 12px;">Entrega</th>
+                            <th style="padding: 12px;">Estado</th>
+                            <th style="padding: 12px;">Acción</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaPedidosDisponibles">
+                        <tr>
+                            <td colspan="7" style="padding: 12px;">
+                                Pulsa «Actualizar pedidos» para consultar la lista.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </section>
+        
+        <section id="seccionComercios" style="display: none; margin-top: 30px;">
+
+            <h2>Comercios</h2>
+            <p>Elige un comercio para ver sus productos y hacer tu pedido.</p>
+            <p id="mensajeComercios" style="margin-top: 15px;"></p>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Comercio</th><th>Calificación</th><th>Acción</th></tr></thead>
+                    <tbody id="tablaComercios"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cargarListaComercios()">Actualizar</button>
+                <button type="button" onclick="cerrarSeccion('seccionComercios', 'panelCliente')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <section id="seccionCalificaciones" style="display: none; margin-top: 30px;">
+
+            <h2>Calificaciones</h2>
+            <p>Califica el comercio y al repartidor de tus pedidos entregados.</p>
+            <p id="mensajeCalificaciones" style="margin-top: 15px;"></p>
+<h3 style="margin: 20px 0 10px;">Pendientes por calificar</h3>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Pedido</th><th>Comercio</th><th>Repartidor</th><th>Comentario</th><th>Acción</th></tr></thead>
+                    <tbody id="tablaCalificacionesPendientes"></tbody>
+                </table>
+            </div>
+<h3 style="margin: 24px 0 10px;">Mis calificaciones</h3>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Pedido</th><th>Comercio</th><th>Repartidor</th><th>Comentario</th></tr></thead>
+                    <tbody id="tablaCalificacionesHechas"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cerrarSeccion('seccionCalificaciones', 'panelCliente')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <section id="seccionAdminComercios" style="display: none; margin-top: 30px;">
+
+            <h2>Gestión de comercios</h2>
+            <p>Comercios registrados y promociones del sistema.</p>
+            <p id="mensajeAdminComercios" style="margin-top: 15px;"></p>
+<h3 style="margin: 20px 0 10px;">Comercios</h3>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>ID</th><th>Comercio</th><th>Responsable</th><th>Calificación</th></tr></thead>
+                    <tbody id="tablaAdminComercios"></tbody>
+                </table>
+            </div>
+<h3 style="margin: 24px 0 10px;">Promociones</h3>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Código</th><th>Descripción</th><th>Estado</th></tr></thead>
+                    <tbody id="tablaAdminPromos"></tbody>
+                </table>
+            </div>
+            <form id="formPromocion" class="form-d">
+                <h3>Crear promoción</h3>
+                <label for="codigoPromo">Código</label>
+                <input id="codigoPromo" type="text" required maxlength="30" class="campo-d" placeholder="Ej. VERANO20">
+                <label for="tipoPromo">Tipo</label>
+                <select id="tipoPromo" class="campo-d">
+                    <option value="PORCENTAJE">Porcentaje de descuento</option>
+                    <option value="MONTO_FIJO">Monto fijo (Q)</option>
+                    <option value="ENVIO_GRATIS">Envío gratis</option>
+                </select>
+                <label for="valorPromo">Valor (% o Q; en envío gratis usa 0)</label>
+                <input id="valorPromo" type="number" required min="0" step="0.01" class="campo-d">
+                <button type="submit">Crear promoción</button>
+                <p id="mensajePromocion" style="margin-top: 12px;"></p>
+            </form>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cerrarSeccion('seccionAdminComercios', 'panelAdmin')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <section id="seccionPanelGeneral" style="display: none; margin-top: 30px;">
+
+            <h2>Panel general</h2>
+            <p>Resumen general de D-Fast.</p>
+            <p id="mensajePanelGeneral" style="margin-top: 15px;"></p>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+                    <tbody id="tablaResumenGeneral"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cargarPanelGeneral()">Actualizar</button>
+                <button type="button" onclick="cerrarSeccion('seccionPanelGeneral', 'panelAdmin')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <section id="seccionMiComercio" style="display: none; margin-top: 30px;">
+
+            <h2>Mi comercio</h2>
+            <p>Administra los productos que ven tus clientes.</p>
+            <form id="formProducto" class="form-d">
+                <h3>Agregar producto</h3>
+                <label for="nombreProducto">Nombre</label>
+                <input id="nombreProducto" type="text" required maxlength="80" class="campo-d" placeholder="Ej. Pizza grande">
+                <label for="precioProducto">Precio (Q)</label>
+                <input id="precioProducto" type="number" required min="0.01" step="0.01" class="campo-d">
+                <label for="pesoProducto">Peso aproximado (kg)</label>
+                <input id="pesoProducto" type="number" min="0.01" step="0.01" value="0.5" class="campo-d">
+                <button type="submit">Agregar producto</button>
+                <p id="mensajeProducto" style="margin-top: 12px;"></p>
+            </form>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Producto</th><th>Precio</th><th>Peso</th><th>Estado</th><th>Acción</th></tr></thead>
+                    <tbody id="tablaMisProductos"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cerrarSeccion('seccionMiComercio', 'panelComercio')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <section id="seccionResumenComercio" style="display: none; margin-top: 30px;">
+
+            <h2>Resumen de actividad</h2>
+            <p>Tus pedidos y ventas.</p>
+            <p id="mensajeResumenComercio" style="margin-top: 15px;"></p>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>Indicador</th><th>Valor</th></tr></thead>
+                    <tbody id="tablaResumenComercio"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cargarResumenComercio()">Actualizar</button>
+                <button type="button" onclick="cerrarSeccion('seccionResumenComercio', 'panelComercio')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <section id="seccionHistorial" style="display: none; margin-top: 30px;">
+
+            <h2>Historial de entregas</h2>
+            <p>Tus entregas completadas.</p>
+            <p id="mensajeHistorial" style="margin-top: 15px;"></p>
+            <div style="overflow-x: auto; margin-top: 20px;">
+                <table class="tabla-d">
+                    <thead><tr><th>ID</th><th>Descripción</th><th>Entrega</th><th>Total</th><th>Pago</th></tr></thead>
+                    <tbody id="tablaHistorial"></tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 15px;">
+                <button type="button" onclick="cargarHistorialEntregas()">Actualizar</button>
+                <button type="button" onclick="cerrarSeccion('seccionHistorial', 'panelRepartidor')">
+                    Volver al panel
+                </button>
+            </div>
+
+        </section>
+
+        <button class="btn-cerrar" onclick="cerrarSesion()">
+            Cerrar sesión
+        </button>
+
+    </div>
+
+
+    <script>
+        const correo = sessionStorage.getItem("correo");
+        const nombre = sessionStorage.getItem("nombreUsuario");
+        const rol = sessionStorage.getItem("rol");
+
+        if (!correo || !nombre || !rol) {
+            window.location.href = "login.html";
+        } else {
+            document.getElementById("nombreUsuario").textContent = nombre;
+            document.getElementById("rolUsuario").textContent =
+                " · " + rol.charAt(0).toUpperCase() + rol.slice(1).toLowerCase();
+
+            document.getElementById("saludoUsuario").textContent =
+                "¡Bienvenido, " + nombre + "! 👋";
+        
+                
+            const paneles = [
+                "panelAdmin",
+                "panelCliente",
+                "panelComercio",
+                "panelRepartidor"
+            ];
+
+            // Ocultamos todos los paneles inicialmente
+            paneles.forEach(function(id) {
+                document.getElementById(id).style.display = "none";
+            });
+
+            const rolActual = rol.toUpperCase();
+
+            if (rolActual === "ADMIN") {
+                document.getElementById("panelAdmin").style.display = "grid";
+            } else if (rolActual === "CLIENTE") {
+                document.getElementById("panelCliente").style.display = "grid";
+            } else if (rolActual === "COMERCIO") {
+                document.getElementById("panelComercio").style.display = "grid";
+            } else if (rolActual === "REPARTIDOR") {
+                document.getElementById("panelRepartidor").style.display = "grid";
+            } else {
+                document.getElementById("saludoUsuario").textContent =
+                "Tu cuenta no tiene un rol reconocido.";
+            }
+
+        }
+         
+         // Mostrar los pedidos recibidos por el comercio
+        async function mostrarPedidosComercio() {
+            document.getElementById("panelComercio").style.display = "none";
+            document.getElementById("pedidosComercio").style.display = "block";
+
+            await cargarPedidosComercio();
+        }
+
+        // Volver al panel del comercio
+        function volverPanelComercio() {
+            document.getElementById("pedidosComercio").style.display = "none";
+            document.getElementById("panelComercio").style.display = "grid";
+        }
+
+        // Consultar pedidos asociados al comercio
+        // Acciones que el comercio puede hacer según el estado del pedido
+        const ACCIONES_COMERCIO = {
+            CREADO: [
+                { texto: "Aceptar", estado: "CONFIRMADO" },
+                { texto: "Rechazar", estado: "RECHAZADO" }
+            ],
+            CONFIRMADO: [{ texto: "Iniciar preparación", estado: "EN_PREPARACION" }],
+            EN_PREPARACION: [{ texto: "Marcar listo", estado: "LISTO" }]
+        };
+
+        async function cambiarEstadoComercio(pedidoId, nuevoEstado) {
+            const mensaje = document.getElementById("mensajePedidosComercio");
+            const parametros = new URLSearchParams({
+                usuarioId: sessionStorage.getItem("idUsuario"),
+                estado: nuevoEstado
+            });
+
+            try {
+                const respuesta = await fetch(
+                    "/api/pedidos/" + encodeURIComponent(pedidoId)
+                    + "/estado?" + parametros.toString(),
+                    { method: "PUT" }
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error((await respuesta.text())
+                        || "No se pudo actualizar el pedido.");
+                }
+                await cargarPedidosComercio();
+                mensaje.textContent = "Pedido #" + pedidoId + " ahora está " + nuevoEstado + ".";
+            } catch (error) {
+                mensaje.textContent = error.message;
+                console.error(error);
+            }
+        }
+
+        async function cargarPedidosComercio() {
+            const tabla = document.getElementById("tablaPedidosComercio");
+            const mensaje = document.getElementById("mensajePedidosComercio");
+            const comercioId = sessionStorage.getItem("idUsuario");
+            const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando pedidos...";
+
+            if (!comercioId || rolActual !== "COMERCIO") {
+                mensaje.textContent = "Debes iniciar sesión con una cuenta de comercio.";
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(
+                    "/api/pedidos/comercio/" + encodeURIComponent(comercioId)
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los pedidos del comercio.");
+                }
+
+                const pedidos = await respuesta.json();
+
+                if (pedidos.length === 0) {
+                    mensaje.textContent = "Todavía no has recibido pedidos.";
+                    return;
+                }
+
+                pedidos.forEach(function(pedido) {
+                    const fila = document.createElement("tr");
+                
+                    [
+                        pedido.id,
+                        pedido.descripcion,
+                        pedido.peso,
+                        pedido.direccionRecogida,
+                        pedido.direccionEntrega,
+                        pedido.estado
+                    ].forEach(function(dato) {
+                        const celda = document.createElement("td");
+                        celda.style.padding = "12px";
+                        celda.style.borderBottom = "1px solid #e5e7eb";
+                        celda.textContent = dato ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                    const celdaAccionComercio = document.createElement("td");
+                    celdaAccionComercio.style.padding = "12px";
+                    (ACCIONES_COMERCIO[pedido.estado] || []).forEach(function(accion) {
+                        const botonAccion = document.createElement("button");
+                        botonAccion.type = "button";
+                        botonAccion.textContent = accion.texto;
+                        botonAccion.style.marginRight = "6px";
+                        botonAccion.addEventListener("click", function() {
+                            cambiarEstadoComercio(pedido.id, accion.estado);
+                        });
+                        celdaAccionComercio.appendChild(botonAccion);
+                    });
+                    fila.appendChild(celdaAccionComercio);
+
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = "Pedidos recibidos: " + pedidos.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                    error.message || "Ocurrió un error al cargar los pedidos.";
+                console.error(error);
+            }
+        }
+    
+        // Abrir la gestión de pedidos del administrador
+async function mostrarGestionPedidos() {
+    document.getElementById("panelAdmin").style.display = "none";
+    document.getElementById("gestionPedidosAdmin").style.display = "block";
+
+    await cargarPedidosAdmin();
+}
+
+// Regresar al panel del administrador
+function volverPanelAdminPedidos() {
+    document.getElementById("gestionPedidosAdmin").style.display = "none";
+    document.getElementById("panelAdmin").style.display = "grid";
+}
+
+// Consultar pedidos y repartidores
+async function cargarPedidosAdmin() {
+    const tabla = document.getElementById("tablaPedidosAdmin");
+    const mensaje = document.getElementById("mensajePedidosAdmin");
+    const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+    tabla.replaceChildren();
+
+    if (rolActual !== "ADMIN") {
+        mensaje.textContent = "Solo el administrador puede gestionar los pedidos.";
+        return;
+    }
+
+    mensaje.textContent = "Cargando pedidos y repartidores...";
+
+    try {
+        const [respuestaPedidos, respuestaUsuarios] = await Promise.all([
+            fetch("/api/pedidos"),
+            fetch("/api/usuarios")
+        ]);
+
+        if (!respuestaPedidos.ok || !respuestaUsuarios.ok) {
+            throw new Error("No se pudieron cargar los pedidos o los usuarios.");
+        }
+
+        const pedidos = await respuestaPedidos.json();
+        const usuarios = await respuestaUsuarios.json();
+
+        const repartidores = usuarios.filter(function(usuario) {
+            return (usuario.rol || "").toUpperCase() === "REPARTIDOR";
+        });
+
+        if (pedidos.length === 0) {
+            mensaje.textContent = "No hay pedidos registrados.";
+            return;
+        }
+
+        pedidos.forEach(function(pedido) {
+            const fila = document.createElement("tr");
+
+            [
+                pedido.id,
+                pedido.descripcion,
+                pedido.peso,
+                pedido.direccionRecogida,
+                pedido.direccionEntrega,
+                pedido.estado
+            ].forEach(function(dato) {
+                const celda = document.createElement("td");
+                celda.style.padding = "12px";
+                celda.style.borderBottom = "1px solid #e5e7eb";
+                celda.textContent = dato ?? "";
+                fila.appendChild(celda);
+            });
+
+            const celdaRepartidor = document.createElement("td");
+            celdaRepartidor.style.padding = "12px";
+
+            const selector = document.createElement("select");
+            selector.id = "repartidorPedido" + pedido.id;
+            selector.style.padding = "8px";
+
+            const opcionInicial = document.createElement("option");
+            opcionInicial.value = "";
+            opcionInicial.textContent = "Seleccionar";
+            selector.appendChild(opcionInicial);
+
+            repartidores.forEach(function(repartidor) {
+                const opcion = document.createElement("option");
+                opcion.value = repartidor.id;
+                opcion.textContent = repartidor.nombre;
+                selector.appendChild(opcion);
+            });
+
+            celdaRepartidor.appendChild(selector);
+            fila.appendChild(celdaRepartidor);
+
+            const celdaAccion = document.createElement("td");
+            celdaAccion.style.padding = "12px";
+
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.textContent = "Asignar";
+            boton.disabled = ["EN_CAMINO", "ENTREGADO", "CANCELADO", "RECHAZADO"]
+                    .includes(pedido.estado)
+                    || repartidores.length === 0;
+
+            boton.addEventListener("click", function() {
+                asignarRepartidorAdmin(
+                    pedido.id,
+                    selector.value
+                );
+            });
+
+            celdaAccion.appendChild(boton);
+            fila.appendChild(celdaAccion);
+            tabla.appendChild(fila);
+        });
+
+        mensaje.textContent = "Pedidos encontrados: " + pedidos.length
+                + ". Repartidores disponibles: " + repartidores.length + ".";
+
+    } catch (error) {
+        mensaje.textContent = error.message
+                || "Error al consultar los pedidos.";
+        console.error(error);
+    }
+}
+
+// Asignar un pedido a un repartidor
+async function asignarRepartidorAdmin(pedidoId, repartidorId) {
+    const mensaje = document.getElementById("mensajePedidosAdmin");
+
+    if (!repartidorId) {
+        mensaje.textContent = "Selecciona un repartidor antes de asignar.";
+        return;
+    }
+
+    mensaje.textContent = "Asignando el pedido #" + pedidoId + "...";
+
+    try {
+        const parametros = new URLSearchParams({
+            repartidorId: repartidorId
+        });
+
+        const respuesta = await fetch(
+            "/api/pedidos/" + encodeURIComponent(pedidoId)
+            + "/asignar-repartidor?" + parametros.toString(),
+            { method: "PATCH" }
+        );
+
+        const resultado = await respuesta.text();
+
+        if (!respuesta.ok) {
+            throw new Error(resultado || "No se pudo asignar el repartidor.");
+        }
+
+        mensaje.textContent = "Pedido #" + pedidoId
+                + " asignado correctamente.";
+
+        await cargarPedidosAdmin();
+
+    } catch (error) {
+        mensaje.textContent = error.message
+                || "Ocurrió un error al asignar el repartidor.";
+        console.error(error);
+    }
+}
+    
+        async function mostrarGestionUsuarios() {
+            document.getElementById("panelAdmin").style.display = "none";
+            document.getElementById("gestionUsuarios").style.display = "block";
+
+            await cargarUsuarios();
+        }
+
+        function volverAlPanel() {
+            document.getElementById("gestionUsuarios").style.display = "none";
+            document.getElementById("panelAdmin").style.display = "grid";
+        }
+
+        async function cargarUsuarios() {
+            const tabla = document.getElementById("tablaUsuarios");
+            const mensaje = document.getElementById("mensajeUsuarios");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando usuarios...";
+
+            try {
+                const respuesta = await fetch("/api/usuarios");
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los usuarios.");
+                }
+
+                const usuarios = await respuesta.json();
+
+                if (usuarios.length === 0) {
+                    mensaje.textContent = "No hay usuarios registrados.";
+                    return;
+                }
+
+                usuarios.forEach(function(usuario) {
+                    const fila = document.createElement("tr");
+
+                    [usuario.id, usuario.nombre, usuario.correo, usuario.rol]
+                        .forEach(function(dato) {
+                            const celda = document.createElement("td");
+                            celda.style.padding = "12px";
+                            celda.textContent = dato ?? "";
+                            fila.appendChild(celda);
+                        });
+
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = "Usuarios encontrados: " + usuarios.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                    "No se pudo cargar la lista. Verifica que el servidor esté funcionando.";
+                console.error(error);
+            }
+        }
+            
+                
+        async function mostrarMisPedidos() {
+            document.getElementById("panelCliente").style.display = "none";
+            document.getElementById("misPedidos").style.display = "block";
+
+        await cargarMisPedidos();
+        await cargarComercios();
+        }
+
+        function volverAlPanelCliente() {
+            document.getElementById("misPedidos").style.display = "none";
+            document.getElementById("panelCliente").style.display = "grid";
+        }
+        
+        // Cargar los comercios disponibles
+        async function cargarComercios() {
+        const selector = document.getElementById("comercioPedido");
+
+            selector.replaceChildren();
+
+        const opcionInicial = document.createElement("option");
+            opcionInicial.value = "";
+            opcionInicial.textContent = "Cargando comercios...";
+            selector.appendChild(opcionInicial);
+
+        try {
+            const respuesta = await fetch("/api/usuarios", {
+                cache: "no-store"
+            });
+
+        if (!respuesta.ok) {
+            throw new Error("No se pudieron consultar los usuarios.");
+        }
+
+        const usuarios = await respuesta.json();
+
+        const comercios = usuarios.filter(function(usuario) {
+            return (usuario.rol || "").trim().toUpperCase() === "COMERCIO";
+        });
+
+        selector.replaceChildren();
+
+        const opcionDefault = document.createElement("option");
+        opcionDefault.value = "";
+        opcionDefault.textContent = comercios.length > 0
+            ? "Selecciona un comercio"
+            : "No hay comercios registrados";
+        selector.appendChild(opcionDefault);
+
+        comercios.forEach(function(comercio) {
+            const opcion = document.createElement("option");
+            opcion.value = comercio.id;
+
+            const nombreComercial =
+                typeof comercio.nombreComercio === "string"
+                    ? comercio.nombreComercio.trim()
+                    : "";
+
+            opcion.textContent =
+                nombreComercial || comercio.nombre || "Comercio sin nombre";
+
+            console.log("Opción del selector:", {
+                id: comercio.id,
+                nombrePersonal: comercio.nombre,
+                nombreComercio: comercio.nombreComercio,
+                textoMostrado: opcion.textContent
+            });
+
+            selector.appendChild(opcion);
+        });
+
+        } catch (error) {
+            selector.replaceChildren();
+
+            const opcionError = document.createElement("option");
+            opcionError.value = "";
+            opcionError.textContent = "Error al cargar comercios";
+            selector.appendChild(opcionError);
+
+            console.error("Error al cargar comercios:", error);
+        }
+        }   
+
+        async function cargarMisPedidos() {
+            const tabla = document.getElementById("tablaMisPedidos");
+            const mensaje = document.getElementById("mensajeMisPedidos");
+            const idUsuario = sessionStorage.getItem("idUsuario");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando pedidos...";
+
+        if (!idUsuario) {
+            mensaje.textContent =
+                "No se encontró tu sesión. Inicia sesión nuevamente.";
+            return;
+        }
+
+        try {
+            const respuesta = await fetch(
+                "/api/pedidos/cliente/" + encodeURIComponent(idUsuario)
+            );
+
+            if (!respuesta.ok) {
+                throw new Error("No se pudieron consultar los pedidos.");
+            }
+
+            const pedidos = await respuesta.json();
+
+            if (pedidos.length === 0) {
+                mensaje.textContent = "Todavía no tienes pedidos registrados.";
+                return;
+            }
+
+            pedidos.forEach(function(pedido) {
+                const fila = document.createElement("tr");
+
+                [
+                    pedido.id,
+                    pedido.descripcion,
+                    pedido.peso,
+                    pedido.direccionRecogida,
+                    pedido.direccionEntrega,
+                    pedido.estado,
+                    pedido.total == null ? "" : "Q" + Number(pedido.total).toFixed(2),
+                    pedido.metodoPago
+                        ? pedido.metodoPago + " · " + (pedido.estadoPago || "")
+                        : ""
+                ].forEach(function(dato) {
+                    const celda = document.createElement("td");
+                    celda.style.padding = "12px";
+                    celda.style.borderBottom = "1px solid #e5e7eb";
+                    celda.textContent = dato ?? "";
+                    fila.appendChild(celda);
+                });
+
+                tabla.appendChild(fila);
+            });
+
+            mensaje.textContent =
+                "Pedidos encontrados: " + pedidos.length;
+
+        } catch (error) {
+            mensaje.textContent =
+                "No se pudieron cargar los pedidos. Verifica el servidor.";
+            console.error(error);
+        }
+        }
+        
+        
+        document.getElementById("formPedido").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const mensaje = document.getElementById("mensajeCrearPedido");
+            const boton = document.getElementById("btnCrearPedido");
+            const idUsuario = sessionStorage.getItem("idUsuario");
+            const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+            if (!idUsuario || rolActual !== "CLIENTE") {
+                mensaje.textContent = "Debes iniciar sesión con una cuenta de cliente.";
+                return;
+            }
+
+            const comercioId = document.getElementById("comercioPedido").value;
+            if (!comercioId) {
+                mensaje.textContent = "Selecciona un comercio.";
+                return;
+            }
+
+            const pedido = {
+                clienteId: Number(idUsuario),
+                comercioId: Number(comercioId),
+                direccionEntrega: document.getElementById("entregaPedido").value.trim(),
+                codigoPromocion: document.getElementById("promoPedido").value.trim() || null,
+                metodoPago: document.getElementById("metodoPagoPedido").value
+            };
+
+            if (!pedido.direccionEntrega) {
+                mensaje.textContent = "Indica la dirección de entrega.";
+                return;
+            }
+
+            if (productosDelComercio.length > 0) {
+                // Pedido con productos del comercio
+                pedido.items = obtenerItemsSeleccionados();
+                if (pedido.items.length === 0) {
+                    mensaje.textContent = "Selecciona al menos un producto.";
+                    return;
+                }
+            } else {
+                // Comercio sin productos: pedido manual (como antes)
+                const peso = Number(document.getElementById("pesoPedido").value);
+                if (!Number.isFinite(peso) || peso <= 0) {
+                    mensaje.textContent = "Ingresa un peso mayor que cero.";
+                    return;
+                }
+                pedido.descripcion = document.getElementById("descripcionPedido").value.trim();
+                pedido.peso = peso;
+                pedido.direccionRecogida = document.getElementById("recogidaPedido").value.trim();
+                if (!pedido.descripcion || !pedido.direccionRecogida) {
+                    mensaje.textContent = "Completa todos los campos.";
+                    return;
+                }
+            }
+
+            if (pedido.metodoPago === "TARJETA") {
+                pedido.titularTarjeta = document.getElementById("titularTarjeta").value.trim();
+                pedido.numeroTarjeta = document.getElementById("numeroTarjeta").value.trim();
+                pedido.vencimientoTarjeta = document.getElementById("vencimientoTarjeta").value.trim();
+                pedido.cvv = document.getElementById("cvvTarjeta").value.trim();
+            } else if (pedido.metodoPago === "TRANSFERENCIA") {
+                pedido.referenciaTransferencia =
+                    document.getElementById("referenciaTransferencia").value.trim();
+            }
+
+            boton.disabled = true;
+            boton.textContent = "Registrando...";
+            mensaje.textContent = "";
+
+            try {
+                const respuesta = await fetch("/api/pedidos", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(pedido)
+                });
+
+                const resultado = await respuesta.text();
+
+                if (!respuesta.ok) {
+                    throw new Error(resultado || "No se pudo registrar el pedido.");
+                }
+
+                document.getElementById("formPedido").reset();
+                await cargarProductosDelComercio();
+                actualizarCamposPago();
+                mensaje.textContent = resultado;
+
+                await cargarMisPedidos();
+
+            } catch (error) {
+                mensaje.textContent = error.message ||
+                    "Ocurrió un error al registrar el pedido.";
+                console.error(error);
+            } finally {
+                boton.disabled = false;
+                boton.textContent = "Registrar pedido";
+            }
+        });
+
+        async function mostrarSeguimiento() {
+            document.getElementById("panelCliente").style.display = "none";
+            document.getElementById("seccionSeguimiento").style.display = "block";
+
+            await cargarSeguimiento();
+        }
+
+        function volverDelSeguimiento() {
+            document.getElementById("seccionSeguimiento").style.display = "none";
+            document.getElementById("panelCliente").style.display = "grid";
+        }
+
+        async function cargarSeguimiento() {
+            const tabla = document.getElementById("tablaSeguimiento");
+            const mensaje = document.getElementById("mensajeSeguimiento");
+            const idUsuario = sessionStorage.getItem("idUsuario");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Consultando el estado de tus pedidos...";
+
+            if (!idUsuario) {
+                mensaje.textContent = "Tu sesión no está disponible. Inicia sesión nuevamente.";
+                return;
+            }
+
+            try {
+            const respuesta = await fetch(
+                    "/api/pedidos/cliente/" + encodeURIComponent(idUsuario)
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudo consultar el seguimiento.");
+                }
+
+                const pedidos = await respuesta.json();
+
+                if (pedidos.length === 0) {
+                    mensaje.textContent = "Todavía no tienes pedidos para consultar.";
+                    return;
+                }
+
+                pedidos.forEach(function(pedido) {
+                    const fila = document.createElement("tr");
+
+                    [
+                        pedido.id,
+                        pedido.descripcion,
+                        pedido.direccionEntrega,
+                        pedido.estado
+                    ].forEach(function(dato) {
+                        const celda = document.createElement("td");
+                        celda.style.padding = "12px";
+                        celda.style.borderBottom = "1px solid #e5e7eb";
+                        celda.textContent = dato ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                tabla.appendChild(fila);
+            });
+
+                mensaje.textContent =
+                    "Pedidos en seguimiento: " + pedidos.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                "No se pudo consultar el seguimiento. Verifica el servidor.";
+                console.error(error);
+            }
+        }
+
+        // Mostrar la pantalla de pedidos disponibles
+        async function mostrarPedidosDisponibles() {
+            document.getElementById("panelRepartidor").style.display = "none";
+            document.getElementById("pedidosDisponibles").style.display = "block";
+
+        await cargarPedidosDisponibles();
+        }
+
+        // Regresar al panel del repartidor
+        function volverPanelRepartidorDisponibles() {
+            document.getElementById("pedidosDisponibles").style.display = "none";
+            document.getElementById("panelRepartidor").style.display = "grid";
+        }
+
+        // Consultar los pedidos que todavía se pueden aceptar
+        async function cargarPedidosDisponibles() {
+            const tabla = document.getElementById("tablaPedidosDisponibles");
+            const mensaje = document.getElementById("mensajePedidosDisponibles");
+            const rolActual = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+        tabla.replaceChildren();
+
+            if (rolActual !== "REPARTIDOR" || !sessionStorage.getItem("idUsuario")) {
+                mensaje.textContent = "Debes iniciar sesión como repartidor.";
+                return;
+            }
+
+        mensaje.textContent = "Consultando pedidos disponibles...";
+
+            try {
+                const respuesta = await fetch("/api/pedidos/disponibles");
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar los pedidos disponibles.");
+                }
+
+        const pedidos = await respuesta.json();
+
+        if (!Array.isArray(pedidos) || pedidos.length === 0) {
+            mensaje.textContent = "Por ahora no hay pedidos disponibles.";
+            return;
+        }
+
+        pedidos.forEach(function(pedido) {
+            const fila = document.createElement("tr");
+
+            [
+                pedido.id,
+                pedido.descripcion,
+                pedido.peso,
+                pedido.direccionRecogida,
+                pedido.direccionEntrega,
+                pedido.estado
+            ].forEach(function(dato) {
+                const celda = document.createElement("td");
+                celda.style.padding = "12px";
+                celda.style.borderBottom = "1px solid #e5e7eb";
+                celda.textContent = dato ?? "";
+                fila.appendChild(celda);
+            });
+
+            const celdaAccion = document.createElement("td");
+            celdaAccion.style.padding = "12px";
+
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.textContent = "Aceptar pedido";
+
+            boton.addEventListener("click", function() {
+                aceptarPedidoDisponible(pedido.id, boton);
+            });
+
+            celdaAccion.appendChild(boton);
+            fila.appendChild(celdaAccion);
+            tabla.appendChild(fila);
+        });
+
+        mensaje.textContent = "Pedidos disponibles: " + pedidos.length;
+
+    } catch (error) {
+        mensaje.textContent =
+            error.message || "Ocurrió un error al consultar los pedidos.";
+        console.error(error);
+    }
+}
+
+// Aceptar un pedido como repartidor
+async function aceptarPedidoDisponible(pedidoId, boton) {
+    const repartidorId = sessionStorage.getItem("idUsuario");
+    const mensaje = document.getElementById("mensajePedidosDisponibles");
+
+    if (!repartidorId ||
+        (sessionStorage.getItem("rol") || "").toUpperCase() !== "REPARTIDOR") {
+        mensaje.textContent = "Tu sesión de repartidor no es válida.";
+        return;
+    }
+
+    boton.disabled = true;
+    boton.textContent = "Aceptando...";
+    mensaje.textContent = "Intentando aceptar el pedido #" + pedidoId + "...";
+
+    try {
+        const parametros = new URLSearchParams({
+            repartidorId: repartidorId
+        });
+
+        const respuesta = await fetch(
+            "/api/pedidos/" + encodeURIComponent(pedidoId)
+            + "/aceptar?" + parametros.toString(),
+            { method: "PATCH" }
+        );
+
+        const resultado = await respuesta.text();
+
+        if (!respuesta.ok) {
+            throw new Error(resultado || "No se pudo aceptar el pedido.");
+        }
+
+        mensaje.textContent =
+            "¡Pedido #" + pedidoId + " aceptado! Ya aparece en Mis entregas.";
+
+        await cargarPedidosDisponibles();
+
+    } catch (error) {
+        mensaje.textContent =
+            error.message || "Ocurrió un error al aceptar el pedido.";
+        console.error(error);
+
+        boton.disabled = false;
+        boton.textContent = "Aceptar pedido";
+    }
+}
+        
+        async function mostrarMisEntregas() {
+            document.getElementById("panelRepartidor").style.display = "none";
+            document.getElementById("seccionEntregas").style.display = "block";
+
+            await cargarMisEntregas();
+        }
+
+        function volverPanelRepartidor() {
+            document.getElementById("seccionEntregas").style.display = "none";
+            document.getElementById("panelRepartidor").style.display = "grid";
+        }
+
+        async function cargarMisEntregas() {
+            const tabla = document.getElementById("tablaEntregas");
+            const mensaje = document.getElementById("mensajeEntregas");
+            const repartidorId = sessionStorage.getItem("idUsuario");
+
+            tabla.replaceChildren();
+            mensaje.textContent = "Cargando entregas...";
+
+            if (!repartidorId ||
+                (sessionStorage.getItem("rol") || "").toUpperCase() !== "REPARTIDOR") {
+                mensaje.textContent =
+                    "No se encontró una sesión válida de repartidor.";
+                return;
+            }
+
+            try {
+                const respuesta = await fetch(
+                    "/api/pedidos/repartidor/" + encodeURIComponent(repartidorId)
+                );
+
+                if (!respuesta.ok) {
+                    throw new Error("No se pudieron consultar las entregas.");
+                }
+
+                const pedidos = await respuesta.json();
+
+                if (pedidos.length === 0) {
+                    mensaje.textContent = "No tienes entregas asignadas.";
+                    return;
+                }
+
+                pedidos.forEach(function(pedido) {
+                    const fila = document.createElement("tr");
+
+                    [
+                        pedido.id,
+                        pedido.descripcion,
+                        pedido.direccionRecogida,
+                        pedido.direccionEntrega,
+                        pedido.estado
+                    ].forEach(function(dato) {
+                        const celda = document.createElement("td");
+                        celda.style.padding = "12px";
+                        celda.style.borderBottom = "1px solid #e5e7eb";
+                        celda.textContent = dato ?? "";
+                        fila.appendChild(celda);
+                    });
+
+                    const celdaAccion = document.createElement("td");
+                    celdaAccion.style.padding = "12px";
+
+                    const boton = document.createElement("button");
+
+                    if (pedido.estado === "LISTO") {
+                        boton.textContent = "Iniciar entrega";
+                        boton.addEventListener("click", function() {
+                            actualizarEstadoEntrega(pedido.id, "EN_CAMINO");
+                        });
+                    } else if (pedido.estado === "EN_CAMINO") {
+                        boton.textContent = "Marcar entregado";
+                        boton.addEventListener("click", function() {
+                            actualizarEstadoEntrega(pedido.id, "ENTREGADO");
+                        });
+                    } else {
+                        boton.textContent = "Finalizada";
+                        boton.disabled = true;
+                    }
+
+                    celdaAccion.appendChild(boton);
+                    fila.appendChild(celdaAccion);
+                    tabla.appendChild(fila);
+                });
+
+                mensaje.textContent = "Entregas encontradas: " + pedidos.length;
+
+            } catch (error) {
+                mensaje.textContent =
+                    error.message || "Error al cargar las entregas.";
+                console.error(error);
+            }
+        }
+
+        async function actualizarEstadoEntrega(pedidoId, nuevoEstado) {
+            const repartidorId = sessionStorage.getItem("idUsuario");
+            const mensaje = document.getElementById("mensajeEntregas");
+
+            mensaje.textContent = "Actualizando estado...";
+
+            try {
+                const parametros = new URLSearchParams({
+                    repartidorId: repartidorId,
+                    estado: nuevoEstado
+                });
+
+                const respuesta = await fetch(
+                    "/api/pedidos/" + encodeURIComponent(pedidoId)
+                    + "/estado?" + parametros.toString(),
+                    { method: "PATCH" }
+                );
+
+                const resultado = await respuesta.text();
+
+                if (!respuesta.ok) {
+                    throw new Error(
+                        resultado || "No se pudo actualizar el estado."
+                    );
+                }
+
+                mensaje.textContent =
+                    "Pedido #" + pedidoId + " actualizado correctamente.";
+
+                await cargarMisEntregas();
+
+            } catch (error) {
+                mensaje.textContent =
+                    error.message || "Error al actualizar el pedido.";
+                console.error(error);
+            }
+        }
+
+
+        // =====================================================
+        // Paso 2: comercios, productos, promociones, pagos y calificaciones
+        // =====================================================
+
+        function celdaTabla(contenido) {
+            const td = document.createElement("td");
+            td.style.padding = "12px";
+            td.style.borderBottom = "1px solid #e5e7eb";
+            if (contenido instanceof Node) {
+                td.appendChild(contenido);
+            } else {
+                td.textContent = contenido == null ? "" : String(contenido);
+            }
+            return td;
+        }
+
+        function llenarTabla(idTbody, filas, columnas, textoVacio) {
+            const tbody = document.getElementById(idTbody);
+            tbody.replaceChildren();
+
+            if (filas.length === 0) {
+                const tr = document.createElement("tr");
+                const td = celdaTabla(textoVacio);
+                td.colSpan = columnas.length;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+                return;
+            }
+
+            filas.forEach(function(fila) {
+                const tr = document.createElement("tr");
+                columnas.forEach(function(columna) {
+                    tr.appendChild(celdaTabla(columna(fila)));
+                });
+                tbody.appendChild(tr);
+            });
+        }
+
+        function botonTabla(texto, accion) {
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.textContent = texto;
+            boton.style.marginRight = "6px";
+            boton.addEventListener("click", accion);
+            return boton;
+        }
+
+        function abrirSeccion(idPanel, idSeccion) {
+            document.getElementById(idPanel).style.display = "none";
+            document.getElementById(idSeccion).style.display = "block";
+        }
+
+        function cerrarSeccion(idSeccion, idPanel) {
+            document.getElementById(idSeccion).style.display = "none";
+            document.getElementById(idPanel).style.display = "grid";
+        }
+
+        async function pedirJSON(url, opciones) {
+            const respuesta = await fetch(url, Object.assign({ cache: "no-store" }, opciones || {}));
+            const texto = await respuesta.text();
+            if (!respuesta.ok) {
+                throw new Error(texto || ("Error " + respuesta.status));
+            }
+            return texto ? JSON.parse(texto) : null;
+        }
+
+        function dinero(valor) {
+            return valor == null ? "" : "Q" + Number(valor).toFixed(2);
+        }
+
+        function estrellas(n) {
+            return n == null ? "" : "★".repeat(n) + "☆".repeat(5 - n);
+        }
+
+        function textoCalificacion(c) {
+            return c.totalCalificaciones > 0
+                ? "★ " + c.promedio.toFixed(1) + " (" + c.totalCalificaciones + ")"
+                : "Sin calificaciones";
+        }
+
+        function idSesion() {
+            return sessionStorage.getItem("idUsuario");
+        }
+
+        // ---------- Cliente: comercios ----------
+        async function mostrarComercios() {
+            abrirSeccion("panelCliente", "seccionComercios");
+            await cargarListaComercios();
+        }
+
+        async function cargarListaComercios() {
+            const mensaje = document.getElementById("mensajeComercios");
+            mensaje.textContent = "Cargando comercios...";
+            try {
+                const comercios = await pedirJSON("/api/comercios");
+                llenarTabla("tablaComercios", comercios, [
+                    function(c) { return c.nombreComercio || c.nombre; },
+                    textoCalificacion,
+                    function(c) {
+                        return botonTabla("Ver productos y pedir", function() {
+                            pedirEnComercio(c.id);
+                        });
+                    }
+                ], "No hay comercios registrados.");
+                mensaje.textContent = "";
+            } catch (error) {
+                mensaje.textContent = "No se pudieron cargar los comercios.";
+                console.error(error);
+            }
+        }
+
+        async function pedirEnComercio(comercioId) {
+            document.getElementById("seccionComercios").style.display = "none";
+            document.getElementById("misPedidos").style.display = "block";
+
+            await cargarMisPedidos();
+            await cargarComercios();
+
+            document.getElementById("comercioPedido").value = String(comercioId);
+            await cargarProductosDelComercio();
+            document.getElementById("formPedido").scrollIntoView({ behavior: "smooth" });
+        }
+
+        // ---------- Cliente: formulario de pedido con productos ----------
+        let productosDelComercio = [];
+        const COSTO_ENVIO_BASE = 15;
+
+        function modoProductos(activo) {
+            ["bloqueDescripcion", "bloquePeso", "bloqueRecogida"].forEach(function(id) {
+                document.getElementById(id).style.display = activo ? "none" : "block";
+            });
+            document.getElementById("descripcionPedido").required = !activo;
+            document.getElementById("pesoPedido").required = !activo;
+            document.getElementById("recogidaPedido").required = !activo;
+            document.getElementById("bloqueProductos").style.display = activo ? "block" : "none";
+        }
+
+        async function cargarProductosDelComercio() {
+            const comercioId = document.getElementById("comercioPedido").value;
+            const lista = document.getElementById("listaProductos");
+            lista.replaceChildren();
+            productosDelComercio = [];
+
+            if (!comercioId) {
+                modoProductos(false);
+                return;
+            }
+
+            try {
+                productosDelComercio = await pedirJSON(
+                    "/api/comercios/" + encodeURIComponent(comercioId) + "/productos");
+            } catch (error) {
+                console.error(error);
+                productosDelComercio = [];
+            }
+
+            if (productosDelComercio.length === 0) {
+                modoProductos(false);
+                return;
+            }
+
+            modoProductos(true);
+
+            productosDelComercio.forEach(function(producto) {
+                const fila = document.createElement("div");
+                fila.style.cssText = "display: flex; align-items: center; gap: 12px; margin-bottom: 8px;";
+
+                const nombre = document.createElement("span");
+                nombre.style.flex = "1";
+                nombre.textContent = producto.nombre + " — " + dinero(producto.precio);
+
+                const cantidad = document.createElement("input");
+                cantidad.type = "number";
+                cantidad.min = "0";
+                cantidad.max = "99";
+                cantidad.value = "0";
+                cantidad.dataset.productoId = producto.id;
+                cantidad.style.width = "80px";
+                cantidad.style.padding = "8px";
+                cantidad.addEventListener("input", actualizarResumenPedido);
+
+                fila.appendChild(nombre);
+                fila.appendChild(cantidad);
+                lista.appendChild(fila);
+            });
+
+            actualizarResumenPedido();
+        }
+
+        function obtenerItemsSeleccionados() {
+            const items = [];
+            document.querySelectorAll("#listaProductos input[data-producto-id]").forEach(function(campo) {
+                const cantidad = parseInt(campo.value, 10);
+                if (Number.isFinite(cantidad) && cantidad > 0) {
+                    items.push({ productoId: Number(campo.dataset.productoId), cantidad: cantidad });
+                }
+            });
+            return items;
+        }
+
+        function actualizarResumenPedido() {
+            let subtotal = 0;
+            obtenerItemsSeleccionados().forEach(function(item) {
+                const producto = productosDelComercio.find(function(p) {
+                    return p.id === item.productoId;
+                });
+                if (producto) {
+                    subtotal += producto.precio * item.cantidad;
+                }
+            });
+            document.getElementById("resumenPedido").textContent =
+                "Subtotal: " + dinero(subtotal) + " · Envío: " + dinero(COSTO_ENVIO_BASE)
+                + " (la promoción se aplica al registrar)";
+        }
+
+        function actualizarCamposPago() {
+            const metodo = document.getElementById("metodoPagoPedido").value;
+            document.getElementById("camposTarjeta").style.display =
+                metodo === "TARJETA" ? "block" : "none";
+            document.getElementById("camposTransferencia").style.display =
+                metodo === "TRANSFERENCIA" ? "block" : "none";
+        }
+
+        document.getElementById("comercioPedido").addEventListener("change", cargarProductosDelComercio);
+        document.getElementById("metodoPagoPedido").addEventListener("change", actualizarCamposPago);
+
+        // ---------- Cliente: calificaciones ----------
+        function selectorPuntos() {
+            const selector = document.createElement("select");
+            [5, 4, 3, 2, 1].forEach(function(n) {
+                const opcion = document.createElement("option");
+                opcion.value = String(n);
+                opcion.textContent = "★".repeat(n) + " (" + n + ")";
+                selector.appendChild(opcion);
+            });
+            return selector;
+        }
+
+        async function mostrarCalificaciones() {
+            abrirSeccion("panelCliente", "seccionCalificaciones");
+            await cargarCalificaciones();
+        }
+
+        async function cargarCalificaciones() {
+            const mensaje = document.getElementById("mensajeCalificaciones");
+            const tbody = document.getElementById("tablaCalificacionesPendientes");
+            mensaje.textContent = "Cargando...";
+
+            try {
+                const pendientes = await pedirJSON(
+                    "/api/calificaciones/pendientes/" + encodeURIComponent(idSesion()));
+                const hechas = await pedirJSON(
+                    "/api/calificaciones/cliente/" + encodeURIComponent(idSesion()));
+
+                tbody.replaceChildren();
+                if (pendientes.length === 0) {
+                    const tr = document.createElement("tr");
+                    const td = celdaTabla("No tienes pedidos entregados pendientes de calificar.");
+                    td.colSpan = 5;
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
+                }
+
+                pendientes.forEach(function(pedido) {
+                    const puntosComercio = selectorPuntos();
+                    const puntosRepartidor = selectorPuntos();
+                    const comentario = document.createElement("input");
+                    comentario.type = "text";
+                    comentario.maxLength = 200;
+                    comentario.placeholder = "Comentario (opcional)";
+
+                    const tr = document.createElement("tr");
+                    tr.appendChild(celdaTabla("#" + pedido.id + " · " + pedido.descripcion));
+                    tr.appendChild(celdaTabla(puntosComercio));
+                    tr.appendChild(celdaTabla(puntosRepartidor));
+                    tr.appendChild(celdaTabla(comentario));
+                    tr.appendChild(celdaTabla(botonTabla("Enviar", function() {
+                        enviarCalificacion(pedido.id, puntosComercio.value,
+                            puntosRepartidor.value, comentario.value);
+                    })));
+                    tbody.appendChild(tr);
+                });
+
+                llenarTabla("tablaCalificacionesHechas", hechas, [
+                    function(c) { return "#" + c.pedidoId + " · " + c.descripcionPedido; },
+                    function(c) { return estrellas(c.puntosComercio); },
+                    function(c) { return estrellas(c.puntosRepartidor); },
+                    function(c) { return c.comentario || ""; }
+                ], "Todavía no has calificado pedidos.");
+
+                mensaje.textContent = "";
+            } catch (error) {
+                mensaje.textContent = "No se pudieron cargar las calificaciones.";
+                console.error(error);
+            }
+        }
+
+        async function enviarCalificacion(pedidoId, puntosComercio, puntosRepartidor, comentario) {
+            const mensaje = document.getElementById("mensajeCalificaciones");
+            try {
+                await pedirJSON("/api/calificaciones", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        pedidoId: pedidoId,
+                        clienteId: Number(idSesion()),
+                        puntosComercio: Number(puntosComercio),
+                        puntosRepartidor: Number(puntosRepartidor),
+                        comentario: comentario.trim() || null
+                    })
+                });
+                await cargarCalificaciones();
+                mensaje.textContent = "¡Gracias por tu calificación!";
+            } catch (error) {
+                mensaje.textContent = error.message;
+                console.error(error);
+            }
+        }
+
+        // ---------- Admin: comercios y promociones ----------
+        async function mostrarAdminComercios() {
+            abrirSeccion("panelAdmin", "seccionAdminComercios");
+            await cargarAdminComercios();
+        }
+
+        async function cargarAdminComercios() {
+            const mensaje = document.getElementById("mensajeAdminComercios");
+            mensaje.textContent = "Cargando...";
+            try {
+                const comercios = await pedirJSON("/api/comercios");
+                llenarTabla("tablaAdminComercios", comercios, [
+                    function(c) { return c.id; },
+                    function(c) { return c.nombreComercio || c.nombre; },
+                    function(c) { return c.nombre; },
+                    textoCalificacion
+                ], "No hay comercios registrados.");
+
+                const promos = await pedirJSON("/api/promociones?soloActivas=false");
+                llenarTabla("tablaAdminPromos", promos, [
+                    function(p) { return p.codigo; },
+                    function(p) { return p.descripcion; },
+                    function(p) { return p.activa ? "Activa" : "Inactiva"; }
+                ], "No hay promociones.");
+
+                mensaje.textContent = "";
+            } catch (error) {
+                mensaje.textContent = "No se pudo cargar la información.";
+                console.error(error);
+            }
+        }
+
+        document.getElementById("formPromocion").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const mensaje = document.getElementById("mensajePromocion");
+            try {
+                await pedirJSON("/api/promociones", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        usuarioId: Number(idSesion()),
+                        codigo: document.getElementById("codigoPromo").value.trim(),
+                        tipo: document.getElementById("tipoPromo").value,
+                        valor: Number(document.getElementById("valorPromo").value)
+                    })
+                });
+                document.getElementById("formPromocion").reset();
+                await cargarAdminComercios();
+                mensaje.textContent = "Promoción creada.";
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        });
+
+        // ---------- Admin: panel general ----------
+        async function mostrarPanelGeneral() {
+            abrirSeccion("panelAdmin", "seccionPanelGeneral");
+            await cargarPanelGeneral();
+        }
+
+        async function cargarPanelGeneral() {
+            const mensaje = document.getElementById("mensajePanelGeneral");
+            mensaje.textContent = "Cargando...";
+            try {
+                const r = await pedirJSON("/api/reportes/resumen");
+                const filas = [
+                    ["Pedidos registrados", r.totalPedidos],
+                    ["Ventas de pedidos entregados", dinero(r.ventasEntregadas)],
+                    ["Usuarios registrados", r.totalUsuarios]
+                ]
+                    .concat(Object.entries(r.pedidosPorEstado).map(function(par) {
+                        return ["Pedidos " + par[0], par[1]];
+                    }))
+                    .concat(Object.entries(r.usuariosPorRol).map(function(par) {
+                        return ["Usuarios " + par[0], par[1]];
+                    }));
+                llenarTabla("tablaResumenGeneral", filas, [
+                    function(f) { return f[0]; },
+                    function(f) { return f[1]; }
+                ], "Sin datos.");
+                mensaje.textContent = "";
+            } catch (error) {
+                mensaje.textContent = "No se pudo cargar el resumen.";
+                console.error(error);
+            }
+        }
+
+        // ---------- Comercio: mis productos ----------
+        async function mostrarMiComercio() {
+            abrirSeccion("panelComercio", "seccionMiComercio");
+            await cargarMisProductos();
+        }
+
+        async function cargarMisProductos() {
+            const mensaje = document.getElementById("mensajeProducto");
+            try {
+                const productos = await pedirJSON(
+                    "/api/comercios/" + encodeURIComponent(idSesion()) + "/productos?todos=true");
+                llenarTabla("tablaMisProductos", productos, [
+                    function(p) { return p.nombre; },
+                    function(p) { return dinero(p.precio); },
+                    function(p) { return p.pesoKg + " kg"; },
+                    function(p) { return p.disponible ? "Disponible" : "Agotado"; },
+                    function(p) {
+                        return botonTabla(
+                            p.disponible ? "Marcar agotado" : "Marcar disponible",
+                            function() { cambiarDisponibilidadProducto(p.id, !p.disponible); });
+                    }
+                ], "Todavía no tienes productos. Agrega el primero.");
+            } catch (error) {
+                mensaje.textContent = "No se pudieron cargar tus productos.";
+                console.error(error);
+            }
+        }
+
+        async function cambiarDisponibilidadProducto(productoId, disponible) {
+            const mensaje = document.getElementById("mensajeProducto");
+            try {
+                await pedirJSON(
+                    "/api/comercios/" + encodeURIComponent(idSesion())
+                    + "/productos/" + encodeURIComponent(productoId)
+                    + "/disponibilidad?usuarioId=" + encodeURIComponent(idSesion())
+                    + "&disponible=" + disponible,
+                    { method: "PATCH" });
+                await cargarMisProductos();
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        }
+
+        document.getElementById("formProducto").addEventListener("submit", async function(event) {
+            event.preventDefault();
+            const mensaje = document.getElementById("mensajeProducto");
+            try {
+                await pedirJSON(
+                    "/api/comercios/" + encodeURIComponent(idSesion()) + "/productos", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        usuarioId: Number(idSesion()),
+                        nombre: document.getElementById("nombreProducto").value.trim(),
+                        precio: Number(document.getElementById("precioProducto").value),
+                        pesoKg: Number(document.getElementById("pesoProducto").value) || 0.5
+                    })
+                });
+                document.getElementById("formProducto").reset();
+                await cargarMisProductos();
+                mensaje.textContent = "Producto agregado.";
+            } catch (error) {
+                mensaje.textContent = error.message;
+            }
+        });
+
+        // ---------- Comercio: resumen de actividad ----------
+        async function mostrarResumenComercio() {
+            abrirSeccion("panelComercio", "seccionResumenComercio");
+            await cargarResumenComercio();
+        }
+
+        async function cargarResumenComercio() {
+            const mensaje = document.getElementById("mensajeResumenComercio");
+            mensaje.textContent = "Cargando...";
+            try {
+                const pedidos = await pedirJSON(
+                    "/api/pedidos/comercio/" + encodeURIComponent(idSesion()));
+                const porEstado = {};
+                let ventas = 0;
+                pedidos.forEach(function(p) {
+                    porEstado[p.estado] = (porEstado[p.estado] || 0) + 1;
+                    if (p.estado === "ENTREGADO" && p.total != null) {
+                        ventas += p.total;
+                    }
+                });
+                const filas = [
+                    ["Pedidos recibidos", pedidos.length],
+                    ["Ventas de pedidos entregados", dinero(ventas)]
+                ].concat(Object.entries(porEstado).map(function(par) {
+                    return ["Pedidos " + par[0], par[1]];
+                }));
+                llenarTabla("tablaResumenComercio", filas, [
+                    function(f) { return f[0]; },
+                    function(f) { return f[1]; }
+                ], "Sin actividad todavía.");
+                mensaje.textContent = "";
+            } catch (error) {
+                mensaje.textContent = "No se pudo cargar el resumen.";
+                console.error(error);
+            }
+        }
+
+        // ---------- Repartidor: historial ----------
+        async function mostrarHistorialEntregas() {
+            abrirSeccion("panelRepartidor", "seccionHistorial");
+            await cargarHistorialEntregas();
+        }
+
+        async function cargarHistorialEntregas() {
+            const mensaje = document.getElementById("mensajeHistorial");
+            mensaje.textContent = "Cargando...";
+            try {
+                const pedidos = await pedirJSON(
+                    "/api/pedidos/repartidor/" + encodeURIComponent(idSesion()));
+                const entregados = pedidos.filter(function(p) { return p.estado === "ENTREGADO"; });
+                llenarTabla("tablaHistorial", entregados, [
+                    function(p) { return p.id; },
+                    function(p) { return p.descripcion; },
+                    function(p) { return p.direccionEntrega; },
+                    function(p) { return dinero(p.total); },
+                    function(p) { return p.metodoPago ? p.metodoPago + " · " + (p.estadoPago || "") : ""; }
+                ], "Todavía no tienes entregas completadas.");
+                mensaje.textContent = "";
+            } catch (error) {
+                mensaje.textContent = "No se pudo cargar el historial.";
+                console.error(error);
+            }
+        }
+
+        function cerrarSesion() {
+            sessionStorage.clear();
+            window.location.href = "index.html";
+        }
+        </script>
+
+</body>
+
+</html>

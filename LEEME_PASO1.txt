@@ -1,0 +1,10 @@
+SmartDelivery 360 - Proyecto con el Paso 1 aplicado
+
+1) Abre la carpeta en Apache NetBeans (File > Open Project) o en tu IDE; es un proyecto Maven.
+2) Edita src/main/resources/application.properties y pon TU contrasena de PostgreSQL
+   en la linea spring.datasource.password=
+3) Si tu base dfast_db ya tiene pedidos viejos, corre esto en PostgreSQL ANTES de arrancar:
+     UPDATE pedidos SET estado = 'LISTO'     WHERE estado = 'PENDIENTE';
+     UPDATE pedidos SET estado = 'EN_CAMINO' WHERE estado = 'EN_RUTA';
+   (o simplemente: DELETE FROM pedidos;)
+4) Ejecuta el proyecto (DfastApplication) y abre http://localhost:8080
