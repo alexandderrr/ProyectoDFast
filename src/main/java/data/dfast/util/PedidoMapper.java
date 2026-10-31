@@ -18,6 +18,10 @@ public final class PedidoMapper {
                 pedido.getDireccionEntrega(),
                 pedido.getEstado().name());
 
+        dto.setLatitudRecogida(pedido.getLatitudRecogida());
+        dto.setLongitudRecogida(pedido.getLongitudRecogida());
+        dto.setLatitudEntrega(pedido.getLatitudEntrega());
+        dto.setLongitudEntrega(pedido.getLongitudEntrega());
         dto.setSubtotal(pedido.getSubtotal());
         dto.setCostoEnvio(pedido.getCostoEnvio());
         dto.setDescuento(pedido.getDescuento());
