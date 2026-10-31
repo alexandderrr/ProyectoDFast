@@ -1400,6 +1400,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
         let marcadorEntrega = null;
         let lineaPedido = null;
         let ultimaConsultaNominatim = 0;
+        let consultaDireccionEnCurso = false;
 
         function cambiarModoMapa(modo) {
             modoSeleccionMapa = modo;
@@ -1440,6 +1441,8 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
         }
 
         async function seleccionarPuntoMapa(latlng) {
+            if (consultaDireccionEnCurso) return;
+            consultaDireccionEnCurso = true;
             const lat = Number(latlng.lat.toFixed(7));
             const lon = Number(latlng.lng.toFixed(7));
             const esRecogida = modoSeleccionMapa === "recogida";
@@ -1466,6 +1469,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
             actualizarLineaMapa();
             campoDireccion.value = await obtenerDireccionAproximada(lat, lon);
             estado.textContent = (esRecogida ? "Recogida: " : "Entrega: ") + campoDireccion.value;
+            consultaDireccionEnCurso = false;
             if (esRecogida && !document.getElementById("latitudEntregaPedido").value) {
                 cambiarModoMapa("entrega");
             } else if (!esRecogida && !document.getElementById("latitudRecogidaPedido").value) {
