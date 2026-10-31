@@ -13,6 +13,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
           content="width=device-width, initial-scale=1.0">
 
     <title>Inicio - D-Fast</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
 
     <style>
 
@@ -132,6 +134,19 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             border-radius: 12px;
             margin: 20px 0 25px;
         }
+
+        #mapaPedido {
+            width: 100%;
+            height: 380px;
+            margin: 12px 0 18px;
+            border-radius: 10px;
+            border: 1px solid #d1d5db;
+            z-index: 1;
+        }
+        .selector-ubicacion { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
+        .selector-ubicacion button { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; background: #f8fafc; }
+        .selector-ubicacion button.activo { background: #1d4ed8; color: white; border-color: #1d4ed8; }
+        .estado-ubicacion { color: #475569; font-size: 14px; margin: 6px 0 12px; }
 
         .campo-d {
             display: block;
@@ -430,6 +445,21 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                        placeholder="Ej. 2.5"
                        style="display: block; width: 100%; padding: 12px;
                   margin: 8px 0 16px;"></div>
+
+                <section style="margin: 18px 0;">
+                    <h3>Selecciona las ubicaciones en el mapa</h3>
+                    <p style="margin: 6px 0 10px; color: #64748b;">Elige qué punto vas a marcar y después haz clic en el mapa.</p>
+                    <div class="selector-ubicacion">
+                        <button type="button" id="btnModoRecogida" class="activo" onclick="cambiarModoMapa('recogida')">📍 Elegir recogida</button>
+                        <button type="button" id="btnModoEntrega" onclick="cambiarModoMapa('entrega')">🏁 Elegir entrega</button>
+                    </div>
+                    <p id="estadoMapaPedido" class="estado-ubicacion">Haz clic en el mapa para elegir el punto de recogida.</p>
+                    <div id="mapaPedido" aria-label="Mapa para seleccionar recogida y entrega"></div>
+                    <input type="hidden" id="latitudRecogidaPedido">
+                    <input type="hidden" id="longitudRecogidaPedido">
+                    <input type="hidden" id="latitudEntregaPedido">
+                    <input type="hidden" id="longitudEntregaPedido">
+                </section>
 
                 <div id="bloqueRecogida"><label for="recogidaPedido">Dirección de recogida</label>
                 <input id="recogidaPedido" type="text" required maxlength="250"
@@ -1360,6 +1390,113 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
         }
         
         
+        // ---------- Mapa de recogida y entrega (Leaflet + OpenStreetMap) ----------
+        let mapaPedido = null;
+        let modoSeleccionMapa = "recogida";
+        let marcadorRecogida = null;
+        let marcadorEntrega = null;
+        let lineaPedido = null;
+        let ultimaConsultaNominatim = 0;
+
+        function cambiarModoMapa(modo) {
+            modoSeleccionMapa = modo;
+            document.getElementById("btnModoRecogida").classList.toggle("activo", modo === "recogida");
+            document.getElementById("btnModoEntrega").classList.toggle("activo", modo === "entrega");
+            document.getElementById("estadoMapaPedido").textContent =
+                "Haz clic en el mapa para elegir el punto de " + (modo === "recogida" ? "recogida." : "entrega.");
+        }
+
+        function actualizarLineaMapa() {
+            if (!mapaPedido) return;
+            if (lineaPedido) mapaPedido.removeLayer(lineaPedido);
+            const puntos = [];
+            if (marcadorRecogida) puntos.push(marcadorRecogida.getLatLng());
+            if (marcadorEntrega) puntos.push(marcadorEntrega.getLatLng());
+            if (puntos.length === 2) {
+                lineaPedido = L.polyline(puntos, { color: "#2563eb", weight: 4, dashArray: "8 8" }).addTo(mapaPedido);
+                mapaPedido.fitBounds(lineaPedido.getBounds(), { padding: [35, 35] });
+            }
+        }
+
+        async function obtenerDireccionAproximada(lat, lon) {
+            // Consulta inversa solo cuando la persona selecciona un punto; no es autocompletado.
+            const espera = Math.max(0, 1100 - (Date.now() - ultimaConsultaNominatim));
+            if (espera) await new Promise(resolve => setTimeout(resolve, espera));
+            ultimaConsultaNominatim = Date.now();
+            const url = "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat="
+                + encodeURIComponent(lat) + "&lon=" + encodeURIComponent(lon) + "&accept-language=es";
+            try {
+                const respuesta = await fetch(url, { headers: { "Accept": "application/json" } });
+                if (!respuesta.ok) throw new Error("No se pudo obtener la dirección.");
+                const datos = await respuesta.json();
+                return datos.display_name || ("Coordenadas: " + lat.toFixed(6) + ", " + lon.toFixed(6));
+            } catch (error) {
+                console.warn("Geocodificación inversa no disponible:", error);
+                return "Coordenadas: " + lat.toFixed(6) + ", " + lon.toFixed(6);
+            }
+        }
+
+        async function seleccionarPuntoMapa(latlng) {
+            const lat = Number(latlng.lat.toFixed(7));
+            const lon = Number(latlng.lng.toFixed(7));
+            const esRecogida = modoSeleccionMapa === "recogida";
+            const campoDireccion = document.getElementById(esRecogida ? "recogidaPedido" : "entregaPedido");
+            const campoLat = document.getElementById(esRecogida ? "latitudRecogidaPedido" : "latitudEntregaPedido");
+            const campoLon = document.getElementById(esRecogida ? "longitudRecogidaPedido" : "longitudEntregaPedido");
+            const estado = document.getElementById("estadoMapaPedido");
+
+            campoLat.value = lat;
+            campoLon.value = lon;
+            estado.textContent = "Punto seleccionado. Buscando dirección aproximada...";
+            const marcador = L.circleMarker([lat, lon], {
+                radius: 9, color: esRecogida ? "#15803d" : "#c2410c",
+                fillColor: esRecogida ? "#22c55e" : "#f97316", fillOpacity: 0.95, weight: 2
+            }).addTo(mapaPedido);
+            marcador.bindPopup(esRecogida ? "Punto de recogida" : "Punto de entrega");
+            if (esRecogida) {
+                if (marcadorRecogida) mapaPedido.removeLayer(marcadorRecogida);
+                marcadorRecogida = marcador;
+            } else {
+                if (marcadorEntrega) mapaPedido.removeLayer(marcadorEntrega);
+                marcadorEntrega = marcador;
+            }
+            actualizarLineaMapa();
+            campoDireccion.value = await obtenerDireccionAproximada(lat, lon);
+            estado.textContent = (esRecogida ? "Recogida: " : "Entrega: ") + campoDireccion.value;
+            if (esRecogida && !document.getElementById("latitudEntregaPedido").value) {
+                cambiarModoMapa("entrega");
+            } else if (!esRecogida && !document.getElementById("latitudRecogidaPedido").value) {
+                cambiarModoMapa("recogida");
+            }
+        }
+
+        function inicializarMapaPedido() {
+            if (mapaPedido || !document.getElementById("mapaPedido")) return;
+            mapaPedido = L.map("mapaPedido").setView([14.6349, -90.5069], 12);
+            L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(mapaPedido);
+            mapaPedido.on("click", function(event) { seleccionarPuntoMapa(event.latlng); });
+            setTimeout(function() { mapaPedido.invalidateSize(); }, 150);
+        }
+
+        function reiniciarMapaPedido() {
+            [marcadorRecogida, marcadorEntrega, lineaPedido].forEach(function(capa) {
+                if (capa && mapaPedido) mapaPedido.removeLayer(capa);
+            });
+            marcadorRecogida = null;
+            marcadorEntrega = null;
+            lineaPedido = null;
+            ["latitudRecogidaPedido", "longitudRecogidaPedido", "latitudEntregaPedido", "longitudEntregaPedido"].forEach(function(id) {
+                document.getElementById(id).value = "";
+            });
+            cambiarModoMapa("recogida");
+            if (mapaPedido) mapaPedido.setView([14.6349, -90.5069], 12);
+        }
+
+        inicializarMapaPedido();
+
         document.getElementById("formPedido").addEventListener("submit", async function(event) {
             event.preventDefault();
 
@@ -1383,12 +1520,21 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
                 clienteId: Number(idUsuario),
                 comercioId: Number(comercioId),
                 direccionEntrega: document.getElementById("entregaPedido").value.trim(),
+                latitudRecogida: document.getElementById("latitudRecogidaPedido").value ? Number(document.getElementById("latitudRecogidaPedido").value) : null,
+                longitudRecogida: document.getElementById("longitudRecogidaPedido").value ? Number(document.getElementById("longitudRecogidaPedido").value) : null,
+                latitudEntrega: document.getElementById("latitudEntregaPedido").value ? Number(document.getElementById("latitudEntregaPedido").value) : null,
+                longitudEntrega: document.getElementById("longitudEntregaPedido").value ? Number(document.getElementById("longitudEntregaPedido").value) : null,
                 codigoPromocion: document.getElementById("promoPedido").value.trim() || null,
                 metodoPago: document.getElementById("metodoPagoPedido").value
             };
 
             if (!pedido.direccionEntrega) {
-                mensaje.textContent = "Indica la dirección de entrega.";
+                mensaje.textContent = "Selecciona el punto de entrega en el mapa.";
+                return;
+            }
+            if (pedido.latitudRecogida == null || pedido.longitudRecogida == null
+                    || pedido.latitudEntrega == null || pedido.longitudEntrega == null) {
+                mensaje.textContent = "Selecciona los puntos de recogida y entrega en el mapa.";
                 return;
             }
 
@@ -1443,6 +1589,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
                 }
 
                 document.getElementById("formPedido").reset();
+                reiniciarMapaPedido();
                 await cargarProductosDelComercio();
                 actualizarCamposPago();
                 mensaje.textContent = resultado;
@@ -2336,6 +2483,8 @@ async function aceptarPedidoDisponible(pedidoId, boton) {
             window.location.href = "index.html";
         }
         </script>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+                integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
 </body>
 
