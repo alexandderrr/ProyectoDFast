@@ -7,6 +7,10 @@ public class PedidoRespuestaDTO {
     private Double peso;
     private String direccionRecogida;
     private String direccionEntrega;
+    private Double latitudRecogida;
+    private Double longitudRecogida;
+    private Double latitudEntrega;
+    private Double longitudEntrega;
     private String estado;
 
     // Datos de dinero y pago (pueden ser null en pedidos viejos)
@@ -38,6 +42,14 @@ public class PedidoRespuestaDTO {
     public Double getPeso() { return peso; }
     public String getDireccionRecogida() { return direccionRecogida; }
     public String getDireccionEntrega() { return direccionEntrega; }
+    public Double getLatitudRecogida() { return latitudRecogida; }
+    public void setLatitudRecogida(Double latitudRecogida) { this.latitudRecogida = latitudRecogida; }
+    public Double getLongitudRecogida() { return longitudRecogida; }
+    public void setLongitudRecogida(Double longitudRecogida) { this.longitudRecogida = longituditudRecogida; }
+    public Double getLatitudEntrega() { return latitudEntrega; }
+    public void setLatitudEntrega(Double latitudEntrega) { this.latitudEntrega = latitudEntrega; }
+    public Double getLongitudEntrega() { return longitudEntrega; }
+    public void setLongitudEntrega(Double longitudEntrega) { this.longitudEntrega = longitudEntrega; }
     public String getEstado() { return estado; }
 
     public Double getSubtotal() { return subtotal; }
