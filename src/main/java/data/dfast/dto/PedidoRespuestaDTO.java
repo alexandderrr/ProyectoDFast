@@ -45,7 +45,7 @@ public class PedidoRespuestaDTO {
     public Double getLatitudRecogida() { return latitudRecogida; }
     public void setLatitudRecogida(Double latitudRecogida) { this.latitudRecogida = latitudRecogida; }
     public Double getLongitudRecogida() { return longitudRecogida; }
-    public void setLongitudRecogida(Double longitudRecogida) { this.longitudRecogida = longituditudRecogida; }
+    public void setLongitudRecogida(Double longitudRecogida) { this.longitudRecogida = longitudRecogida; }
     public Double getLatitudEntrega() { return latitudEntrega; }
     public void setLatitudEntrega(Double latitudEntrega) { this.latitudEntrega = latitudEntrega; }
     public Double getLongitudEntrega() { return longitudEntrega; }

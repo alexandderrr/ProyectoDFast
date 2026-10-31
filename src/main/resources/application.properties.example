@@ -9,3 +9,7 @@ spring.datasource.password=contraseña personal postgres
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
+
+# Clave de Google Maps (Maps JavaScript API, Geocoding API y Directions API)
+# Déjala vacía para ver el mapa de referencia sin conexión a Google
+google.maps.api.key=
