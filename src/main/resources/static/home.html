@@ -1247,6 +1247,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
         async function mostrarMisPedidos() {
             document.getElementById("panelCliente").style.display = "none";
             document.getElementById("misPedidos").style.display = "block";
+            setTimeout(function() { if (mapaPedido) mapaPedido.invalidateSize(); }, 200);
 
         await cargarMisPedidos();
         await cargarComercios();
@@ -1521,6 +1522,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
             const pedido = {
                 clienteId: Number(idUsuario),
                 comercioId: Number(comercioId),
+                direccionRecogida: document.getElementById("recogidaPedido").value.trim(),
                 direccionEntrega: document.getElementById("entregaPedido").value.trim(),
                 latitudRecogida: document.getElementById("latitudRecogidaPedido").value ? Number(document.getElementById("latitudRecogidaPedido").value) : null,
                 longitudRecogida: document.getElementById("longitudRecogidaPedido").value ? Number(document.getElementById("longitudRecogidaPedido").value) : null,
@@ -2058,6 +2060,7 @@ async function aceptarPedidoDisponible(pedidoId, boton) {
         async function pedirEnComercio(comercioId) {
             document.getElementById("seccionComercios").style.display = "none";
             document.getElementById("misPedidos").style.display = "block";
+            setTimeout(function() { if (mapaPedido) mapaPedido.invalidateSize(); }, 200);
 
             await cargarMisPedidos();
             await cargarComercios();
