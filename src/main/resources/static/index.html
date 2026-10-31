@@ -9,100 +9,40 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>D-Fast</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .contenedor {
-            width: 90%;
-            max-width: 900px;
-            background: white;
-            border-radius: 20px;
-            padding: 60px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .logo {
-            font-size: 70px;
-            margin-bottom: 20px;
-        }
-
-        h1 {
-            font-size: 42px;
-            color: #1f2937;
-            margin-bottom: 15px;
-        }
-
-        .subtitulo {
-            color: #6b7280;
-            font-size: 18px;
-            margin-bottom: 40px;
-        }
-
-        .botones {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        button {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .btn-login {
-            background: #2563eb;
-            color: white;
-        }
-
-        .btn-registro {
-            background: #e5e7eb;
-            color: #1f2937;
-        }
-
-        button:hover {
-            transform: translateY(-2px);
-            opacity: 0.9;
-        }
-
-        .descripcion {
-            margin-top: 40px;
-            color: #6b7280;
-            font-size: 14px;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dfast.css">
 </head>
 
-<body>
+<body class="pagina-inicio">
 
+<div class="auth">
+
+    <aside class="auth-visual">
+        <div class="marca"><span class="marca-icono"><svg viewBox="0 0 24 24"><path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg></span><span>D-<b>Fast</b></span></div>
+
+        <div>
+            <h2 class="auth-titular">Entregas inteligentes, de punta a punta</h2>
+            <p class="auth-texto">Pide, prepara, asigna y sigue cada entrega en tiempo real desde un solo lugar.</p>
+        </div>
+
+        <div class="auth-mapa">
+            <img src="img/mapa-demo.svg" alt="Ruta de una entrega en el mapa">
+            <div class="auth-chip"><strong>Pedido #1024 · En camino</strong><span>Llegada estimada: 25 min</span></div>
+        </div>
+
+        <div class="auth-pie">Clientes · Comercios · Repartidores</div>
+    </aside>
+
+    <main class="auth-panel">
     <div class="contenedor">
 
-        <div class="logo">🚚</div>
+        <div class="marca"><span class="marca-icono"><svg viewBox="0 0 24 24"><path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg></span><span>D-<b>Fast</b></span></div>
 
-        <h1>D-Fast</h1>
+        <h1>Bienvenido a D-Fast</h1>
 
-        <p class="subtitulo">
-            Sistema inteligente de gestión de pedidos y entregas
-        </p>
+        <p class="subtitulo">Sistema inteligente de gestión de pedidos y entregas</p>
 
         <div class="botones">
 
@@ -122,7 +62,16 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
             Plataforma para clientes, comercios y repartidores.
         </p>
 
+        <div class="roles-inicio">
+            <div class="rol-inicio"><strong>🛒 Clientes</strong><span>Pide, paga y sigue tu entrega.</span></div>
+            <div class="rol-inicio"><strong>🏪 Comercios</strong><span>Administra tus productos y pedidos.</span></div>
+            <div class="rol-inicio"><strong>🏍️ Repartidores</strong><span>Acepta entregas y actualiza su estado.</span></div>
+        </div>
     </div>
+
+    </main>
+
+</div>
 
 </body>
 </html>

@@ -9,126 +9,40 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Iniciar sesión - D-Fast</title>
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            min-height: 100vh;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .contenedor {
-            width: 90%;
-            max-width: 420px;
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-        }
-
-        .logo {
-            text-align: center;
-            font-size: 55px;
-            margin-bottom: 10px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #1f2937;
-            margin-bottom: 10px;
-        }
-
-        .subtitulo {
-            text-align: center;
-            color: #6b7280;
-            margin-bottom: 30px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #374151;
-            font-weight: bold;
-        }
-
-        input {
-            width: 100%;
-            padding: 13px;
-            margin-bottom: 20px;
-            border: 1px solid #d1d5db;
-            border-radius: 8px;
-            font-size: 15px;
-        }
-
-        input:focus {
-            outline: none;
-            border-color: #2563eb;
-        }
-
-        button {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #2563eb;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        .registro {
-            text-align: center;
-            margin-top: 20px;
-            color: #6b7280;
-        }
-
-        .registro a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .mensaje {
-            margin-top: 20px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .volver {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            color: #6b7280;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dfast.css">
 </head>
 
-<body>
+<body class="pagina-auth">
 
+<div class="auth">
+
+    <aside class="auth-visual">
+        <div class="marca"><span class="marca-icono"><svg viewBox="0 0 24 24"><path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg></span><span>D-<b>Fast</b></span></div>
+
+        <div>
+            <h2 class="auth-titular">Entregas inteligentes, de punta a punta</h2>
+            <p class="auth-texto">Pide, prepara, asigna y sigue cada entrega en tiempo real desde un solo lugar.</p>
+        </div>
+
+        <div class="auth-mapa">
+            <img src="img/mapa-demo.svg" alt="Ruta de una entrega en el mapa">
+            <div class="auth-chip"><strong>Pedido #1024 · En camino</strong><span>Llegada estimada: 25 min</span></div>
+        </div>
+
+        <div class="auth-pie">Clientes · Comercios · Repartidores</div>
+    </aside>
+
+    <main class="auth-panel">
     <div class="contenedor">
 
-        <div class="logo">🚚</div>
+        <div class="marca"><span class="marca-icono"><svg viewBox="0 0 24 24"><path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg></span><span>D-<b>Fast</b></span></div>
 
-        <h1>D-Fast</h1>
+        <h1>Bienvenido de nuevo</h1>
 
-        <p class="subtitulo">
-            Inicia sesión en tu cuenta
-        </p>
+        <p class="subtitulo">Ingresa tus datos para continuar</p>
 
         <form id="loginForm">
 
@@ -168,6 +82,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         </a>
 
     </div>
+
+    </main>
+
+</div>
 
     <script>
         

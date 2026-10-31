@@ -13,177 +13,75 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
           content="width=device-width, initial-scale=1.0">
 
     <title>Inicio - D-Fast</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dfast.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
                 integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
-    <style>
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fb;
-            min-height: 100vh;
-        }
-
-        header {
-            background: white;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2563eb;
-        }
-
-        .usuario {
-            color: #374151;
-        }
-
-        .contenedor {
-            width: 90%;
-            max-width: 1100px;
-            margin: 50px auto;
-        }
-
-        h1 {
-            color: #1f2937;
-            margin-bottom: 10px;
-        }
-
-        .bienvenida {
-            color: #6b7280;
-            margin-bottom: 35px;
-        }
-
-        .tarjetas {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
-        }
-
-        .tarjeta {
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .tarjeta:hover {
-            transform: translateY(-4px);
-        }
-
-        .icono {
-            font-size: 40px;
-            margin-bottom: 15px;
-        }
-
-        .tarjeta h2 {
-            color: #1f2937;
-            margin-bottom: 10px;
-            font-size: 20px;
-        }
-
-        .tarjeta p {
-            color: #6b7280;
-            font-size: 14px;
-        }
-
-        .btn-cerrar {
-            margin-top: 40px;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 8px;
-            background: #dc2626;
-            color: white;
-            cursor: pointer;
-            font-size: 15px;
-        }
-
-        .btn-cerrar:hover {
-            opacity: 0.9;
-        }
-
-
-        /* ----- Paso 2: tablas y formularios nuevos ----- */
-        .tabla-d {
-            width: 100%;
-            background: white;
-            border-collapse: collapse;
-            text-align: left;
-        }
-
-        .tabla-d th {
-            padding: 12px;
-        }
-
-        .form-d {
-            background: white;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px 0 25px;
-        }
-
-        #mapaPedido {
-            width: 100%;
-            height: 380px;
-            margin: 12px 0 18px;
-            border-radius: 10px;
-            border: 1px solid #d1d5db;
-            z-index: 1;
-        }
-        .selector-ubicacion { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; }
-        .selector-ubicacion button { padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; background: #f8fafc; }
-        .selector-ubicacion button.activo { background: #1d4ed8; color: white; border-color: #1d4ed8; }
-        .estado-ubicacion { color: #475569; font-size: 14px; margin: 6px 0 12px; }
-
-        .campo-d {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0 16px;
-        }
-
-    </style>
-
 </head>
 
-<body>
+<body class="pagina-app">
 
-    <header>
+<div class="app">
 
-        <div class="logo">
-            🚚 D-Fast
+    <aside class="barra-lateral">
+
+        <div class="marca">
+            <span class="marca-icono"><svg viewBox="0 0 24 24"><path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/></svg></span>
+            <span>D-<b>Fast</b></span>
         </div>
 
-        <div class="usuario">
-             Hola, <strong id="nombreUsuario"></strong>
-             <span id="rolUsuario"></span>
+        <nav class="menu-lateral" id="menuLateral" aria-label="Menú principal"></nav>
+
+        <div class="usuario-lateral">
+            <div class="avatar" id="avatarUsuario">D</div>
+            <div class="usuario-datos">
+                <strong id="nombreUsuario"></strong>
+                <span id="rolUsuario"></span>
+            </div>
+            <button type="button" class="btn-salir" onclick="cerrarSesion()"
+                    title="Cerrar sesión" aria-label="Cerrar sesión"><svg viewBox="0 0 24 24"><path d="M9 4H5v16h4M16 8l4 4-4 4M20 12H9"/></svg></button>
         </div>
 
-    </header>
+    </aside>
 
+    <div class="principal">
+
+        <header class="barra-superior">
+            <div>
+                <h1 id="saludoUsuario">Bienvenido a D-Fast 👋</h1>
+                <p class="bienvenida" id="subtituloPagina"></p>
+            </div>
+            <div class="acciones-superiores" id="accionSuperior"></div>
+        </header>
 
     <div class="contenedor">
 
-        <h1 id="saludoUsuario">Bienvenido a D-Fast 👋</h1>
+        <div id="dashboard">
+            <div class="kpis" id="kpis"></div>
 
-        <p class="bienvenida">
-            Selecciona una opción para continuar.
-        </p>
+            <div class="tablero">
+                <div class="tarjeta-panel">
+                    <div class="cabecera-panel"><h3>Seguimiento en tiempo real</h3></div>
+                    <div class="mapa-caja" id="mapaCaja">
+                        <img id="mapaDemo" src="img/mapa-demo.svg" alt="Mapa de referencia de una ruta de entrega">
+                        <div id="mapa"></div>
+                        <div id="mapaLeaflet"></div>
+                        <div class="mapa-info" id="mapaInfo"></div>
+                    </div>
+                    <p class="mapa-aviso" id="mapaAviso"></p>
+                </div>
+
+                <div class="tarjeta-panel">
+                    <div class="cabecera-panel"><h3>Pedidos recientes</h3></div>
+                    <ul class="recientes" id="listaRecientes"></ul>
+                </div>
+            </div>
+        </div>
 
 
         
@@ -847,12 +745,11 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
         </section>
 
-        <button class="btn-cerrar" onclick="cerrarSesion()">
-            Cerrar sesión
-        </button>
+    </div>
 
     </div>
 
+</div>
 
     <script>
         const correo = sessionStorage.getItem("correo");
@@ -864,7 +761,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         } else {
             document.getElementById("nombreUsuario").textContent = nombre;
             document.getElementById("rolUsuario").textContent =
-                " · " + rol.charAt(0).toUpperCase() + rol.slice(1).toLowerCase();
+                rol.charAt(0).toUpperCase() + rol.slice(1).toLowerCase();
 
             document.getElementById("saludoUsuario").textContent =
                 "¡Bienvenido, " + nombre + "! 👋";
@@ -1000,6 +897,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     const celdaAccionComercio = document.createElement("td");
                     celdaAccionComercio.style.padding = "12px";
+                    celdaAccionComercio.style.borderBottom = "1px solid #e5e7eb";
                     (ACCIONES_COMERCIO[pedido.estado] || []).forEach(function(accion) {
                         const botonAccion = document.createElement("button");
                         botonAccion.type = "button";
@@ -1478,7 +1376,7 @@ async function asignarRepartidorAdmin(pedidoId, repartidorId) {
         }
 
         function inicializarMapaPedido() {
-            if (mapaPedido || !document.getElementById("mapaPedido")) return;
+            if (mapaPedido || typeof L === "undefined" || !document.getElementById("mapaPedido")) return;
             mapaPedido = L.map("mapaPedido").setView([14.6349, -90.5069], 12);
             L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 maxZoom: 19,
@@ -2486,6 +2384,672 @@ async function aceptarPedidoDisponible(pedidoId, boton) {
                 console.error(error);
             }
         }
+
+        // =====================================================
+        // Presentación: convierte textos de estado en etiquetas de color
+        // (no cambia datos ni lógica, solo cómo se ven)
+        // =====================================================
+        (function() {
+            const ETIQUETAS = {
+                CREADO: ["Creado", "info"],
+                CONFIRMADO: ["Confirmado", "info"],
+                EN_PREPARACION: ["En preparación", "warn"],
+                LISTO: ["Listo", "violeta"],
+                EN_CAMINO: ["En camino", "violeta"],
+                ENTREGADO: ["Entregado", "ok"],
+                CANCELADO: ["Cancelado", "bad"],
+                RECHAZADO: ["Rechazado", "bad"],
+                Disponible: ["Disponible", "ok"],
+                Agotado: ["Agotado", "bad"],
+                Activa: ["Activa", "ok"],
+                Inactiva: ["Inactiva", "bad"]
+            };
+
+            function capitalizar(texto) {
+                return texto.charAt(0) + texto.slice(1).toLowerCase();
+            }
+
+            function decorar() {
+                document.querySelectorAll("td").forEach(function(td) {
+                    if (td.dataset.decorado || td.children.length > 0) {
+                        return;
+                    }
+                    const texto = td.textContent.trim();
+                    let etiqueta = ETIQUETAS[texto];
+
+                    if (!etiqueta) {
+                        const pago = /^(EFECTIVO|TARJETA|TRANSFERENCIA) · (PAGADO|PENDIENTE)$/.exec(texto);
+                        if (pago) {
+                            etiqueta = [
+                                capitalizar(pago[1]) + " · " + capitalizar(pago[2]),
+                                pago[2] === "PAGADO" ? "ok" : "warn"
+                            ];
+                        }
+                    }
+                    if (!etiqueta) {
+                        return;
+                    }
+
+                    td.dataset.decorado = "1";
+                    const marca = document.createElement("span");
+                    marca.className = "etiqueta etiqueta-" + etiqueta[1];
+                    marca.textContent = etiqueta[0];
+                    td.replaceChildren(marca);
+                });
+            }
+
+            let pendiente = false;
+            new MutationObserver(function() {
+                if (pendiente) {
+                    return;
+                }
+                pendiente = true;
+                requestAnimationFrame(function() {
+                    pendiente = false;
+                    decorar();
+                });
+            }).observe(document.body, { childList: true, subtree: true });
+        })();
+
+        // =====================================================
+        // Panel con barra lateral: menú por rol, indicadores y mapa
+        // =====================================================
+        const ROL_SESION = (sessionStorage.getItem("rol") || "").toUpperCase();
+
+        const PANEL_DEL_ROL = {
+            ADMIN: "panelAdmin",
+            CLIENTE: "panelCliente",
+            COMERCIO: "panelComercio",
+            REPARTIDOR: "panelRepartidor"
+        };
+
+        const RUTAS_ICONOS = {
+            inicio: '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>',
+            tienda: '<path d="M4 9l1.5-5h13L20 9"/><path d="M4 9a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0 5 0"/><path d="M5 12v8h14v-8"/>',
+            caja: '<path d="M12 2.5 3.5 7v10L12 21.5 20.5 17V7L12 2.5Z"/><path d="M3.5 7 12 11.5 20.5 7M12 11.5v10"/>',
+            camion: '<path d="M3 6h11v10H3z"/><path d="M14 9h4l3 3v4h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+            estrella: '<path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>',
+            usuarios: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><path d="M16 4.7a3.5 3.5 0 0 1 0 6.6M18 14.7c1.9.6 3.2 2.3 3.5 5.3"/>',
+            grafico: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+            reloj: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+            mas: '<path d="M12 5v14M5 12h14"/>',
+            dinero: '<path d="M12 3v18"/><path d="M16.5 7.5c-.8-1.2-2.3-1.9-4.5-1.9-2.4 0-4 1.1-4 2.9 0 4 9 1.8 9 6 0 1.8-1.7 3-4.5 3-2.2 0-3.9-.8-4.8-2.3"/>',
+            check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>'
+        };
+
+        function iconoSvg(nombre) {
+            return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (RUTAS_ICONOS[nombre] || "") + '</svg>';
+        }
+
+        const MENU_POR_ROL = {
+            CLIENTE: [
+                { texto: "Inicio", icono: "inicio" },
+                { texto: "Comercios", icono: "tienda", fn: "mostrarComercios", seccion: "seccionComercios" },
+                { texto: "Mis pedidos", icono: "caja", fn: "mostrarMisPedidos", seccion: "misPedidos" },
+                { texto: "Seguimiento", icono: "camion", fn: "mostrarSeguimiento", seccion: "seccionSeguimiento" },
+                { texto: "Calificaciones", icono: "estrella", fn: "mostrarCalificaciones", seccion: "seccionCalificaciones" }
+            ],
+            ADMIN: [
+                { texto: "Inicio", icono: "inicio" },
+                { texto: "Usuarios", icono: "usuarios", fn: "mostrarGestionUsuarios", seccion: "gestionUsuarios" },
+                { texto: "Pedidos", icono: "caja", fn: "mostrarGestionPedidos", seccion: "gestionPedidosAdmin" },
+                { texto: "Comercios", icono: "tienda", fn: "mostrarAdminComercios", seccion: "seccionAdminComercios" },
+                { texto: "Panel general", icono: "grafico", fn: "mostrarPanelGeneral", seccion: "seccionPanelGeneral" }
+            ],
+            COMERCIO: [
+                { texto: "Inicio", icono: "inicio" },
+                { texto: "Mi comercio", icono: "tienda", fn: "mostrarMiComercio", seccion: "seccionMiComercio" },
+                { texto: "Pedidos recibidos", icono: "caja", fn: "mostrarPedidosComercio", seccion: "pedidosComercio" },
+                { texto: "Resumen", icono: "grafico", fn: "mostrarResumenComercio", seccion: "seccionResumenComercio" }
+            ],
+            REPARTIDOR: [
+                { texto: "Inicio", icono: "inicio" },
+                { texto: "Pedidos disponibles", icono: "caja", fn: "mostrarPedidosDisponibles", seccion: "pedidosDisponibles" },
+                { texto: "Mis entregas", icono: "camion", fn: "mostrarMisEntregas", seccion: "seccionEntregas" },
+                { texto: "Historial", icono: "reloj", fn: "mostrarHistorialEntregas", seccion: "seccionHistorial" }
+            ]
+        };
+
+        const ACCION_SUPERIOR = {
+            CLIENTE: { texto: "Nuevo pedido", fn: "mostrarMisPedidos" },
+            COMERCIO: { texto: "Agregar producto", fn: "mostrarMiComercio" },
+            REPARTIDOR: { texto: "Pedidos disponibles", fn: "mostrarPedidosDisponibles" },
+            ADMIN: { texto: "Panel general", fn: "mostrarPanelGeneral" }
+        };
+
+        const SUBTITULO_POR_ROL = {
+            CLIENTE: "Esto es lo que pasa con tus pedidos hoy.",
+            COMERCIO: "Esto es lo que pasa en tu comercio hoy.",
+            REPARTIDOR: "Tus entregas de hoy, de un vistazo.",
+            ADMIN: "Resumen general de la operación de D-Fast."
+        };
+
+        // Navegar = cerrar lo que esté abierto y llamar a la función de siempre
+        function navegar(item) {
+            document.querySelectorAll(".contenedor > section").forEach(function(seccion) {
+                seccion.style.display = "none";
+            });
+            const panel = document.getElementById(PANEL_DEL_ROL[ROL_SESION]);
+            if (panel) {
+                panel.style.display = "grid";
+            }
+            if (item.fn && typeof window[item.fn] === "function") {
+                window[item.fn]();
+            }
+        }
+
+        function construirMenu() {
+            const nav = document.getElementById("menuLateral");
+            nav.replaceChildren();
+            (MENU_POR_ROL[ROL_SESION] || []).forEach(function(item) {
+                const boton = document.createElement("button");
+                boton.type = "button";
+                boton.className = "item-menu";
+                boton.dataset.seccion = item.seccion || "";
+                boton.innerHTML = iconoSvg(item.icono) + "<span></span>";
+                boton.querySelector("span").textContent = item.texto;
+                boton.addEventListener("click", function() { navegar(item); });
+                nav.appendChild(boton);
+            });
+        }
+
+        function construirAccionSuperior() {
+            const accion = ACCION_SUPERIOR[ROL_SESION];
+            const contenedor = document.getElementById("accionSuperior");
+            contenedor.replaceChildren();
+            if (!accion) {
+                return;
+            }
+            const boton = document.createElement("button");
+            boton.type = "button";
+            boton.className = "btn-primario";
+            boton.innerHTML = iconoSvg("mas");
+            boton.appendChild(document.createTextNode(" " + accion.texto));
+            boton.addEventListener("click", function() { navegar(accion); });
+            contenedor.appendChild(boton);
+        }
+
+        // Mantiene el menú resaltado y el título al día, abra lo que abra la pantalla
+        let SALUDO_INICIAL = "";
+        let ultimaSeccionAbierta = "";
+
+        function sincronizarEstado() {
+            const abierta = Array.from(document.querySelectorAll(".contenedor > section"))
+                .find(function(s) { return s.style.display === "block"; });
+            const idAbierta = abierta ? abierta.id : "";
+
+            document.querySelectorAll("#menuLateral .item-menu").forEach(function(boton) {
+                boton.classList.toggle("activo", boton.dataset.seccion === idAbierta);
+            });
+
+            const titulo = document.getElementById("saludoUsuario");
+            const subtitulo = document.getElementById("subtituloPagina");
+            if (abierta) {
+                const encabezado = abierta.querySelector("h2");
+                titulo.textContent = encabezado ? encabezado.textContent : SALUDO_INICIAL;
+                subtitulo.textContent = "";
+            } else {
+                titulo.textContent = SALUDO_INICIAL;
+                subtitulo.textContent = SUBTITULO_POR_ROL[ROL_SESION] || "";
+            }
+
+            if (idAbierta === "" && ultimaSeccionAbierta !== "") {
+                cargarDashboard();
+            }
+            ultimaSeccionAbierta = idAbierta;
+        }
+
+        // ---------- Indicadores ----------
+        function contarEstados(pedidos, estados) {
+            return pedidos.filter(function(p) { return estados.indexOf(p.estado) >= 0; }).length;
+        }
+
+        function sumarTotales(pedidos, estadosValidos) {
+            return pedidos
+                .filter(function(p) { return estadosValidos.indexOf(p.estado) >= 0 && p.total != null; })
+                .reduce(function(suma, p) { return suma + p.total; }, 0);
+        }
+
+        const ESTADOS_EN_CURSO = ["CREADO", "CONFIRMADO", "EN_PREPARACION", "LISTO", "EN_CAMINO"];
+
+        function indicadoresDelRol(pedidos) {
+            const entregados = contarEstados(pedidos, ["ENTREGADO"]);
+            const enCurso = contarEstados(pedidos, ESTADOS_EN_CURSO);
+            const ventas = sumarTotales(pedidos, ["ENTREGADO"]);
+
+            switch (ROL_SESION) {
+                case "COMERCIO":
+                    return [
+                        { clase: "k1", icono: "caja", etiqueta: "Pedidos recibidos", valor: pedidos.length, nota: "en total" },
+                        { clase: "k2", icono: "reloj", etiqueta: "Por atender", valor: contarEstados(pedidos, ["CREADO", "CONFIRMADO", "EN_PREPARACION"]), nota: "requieren acción" },
+                        { clase: "k3", icono: "check", etiqueta: "Entregados", valor: entregados, nota: "completados" },
+                        { clase: "k4", icono: "dinero", etiqueta: "Ventas entregadas", valor: dinero(ventas), nota: "pedidos entregados" }
+                    ];
+                case "REPARTIDOR":
+                    return [
+                        { clase: "k1", icono: "caja", etiqueta: "Entregas asignadas", valor: pedidos.length, nota: "en total" },
+                        { clase: "k2", icono: "camion", etiqueta: "En camino", valor: contarEstados(pedidos, ["EN_CAMINO"]), nota: "ahora mismo" },
+                        { clase: "k3", icono: "check", etiqueta: "Entregadas", valor: entregados, nota: "completadas" },
+                        { clase: "k4", icono: "reloj", etiqueta: "Por iniciar", valor: contarEstados(pedidos, ["LISTO"]), nota: "listas para salir" }
+                    ];
+                case "ADMIN":
+                    return [
+                        { clase: "k1", icono: "caja", etiqueta: "Pedidos totales", valor: pedidos.length, nota: "registrados" },
+                        { clase: "k2", icono: "camion", etiqueta: "En curso", valor: enCurso, nota: "sin terminar" },
+                        { clase: "k3", icono: "check", etiqueta: "Entregados", valor: entregados, nota: "completados" },
+                        { clase: "k4", icono: "dinero", etiqueta: "Ventas entregadas", valor: dinero(ventas), nota: "pedidos entregados" }
+                    ];
+                default:
+                    return [
+                        { clase: "k1", icono: "caja", etiqueta: "Mis pedidos", valor: pedidos.length, nota: "en total" },
+                        { clase: "k2", icono: "camion", etiqueta: "En curso", valor: enCurso, nota: "por llegar" },
+                        { clase: "k3", icono: "check", etiqueta: "Entregados", valor: entregados, nota: "completados" },
+                        { clase: "k4", icono: "dinero", etiqueta: "Total gastado", valor: dinero(sumarTotales(pedidos, ESTADOS_EN_CURSO.concat(["ENTREGADO"]))), nota: "sin cancelados" }
+                    ];
+            }
+        }
+
+        function pintarIndicadores(pedidos) {
+            const contenedor = document.getElementById("kpis");
+            contenedor.replaceChildren();
+            indicadoresDelRol(pedidos).forEach(function(k) {
+                const tarjeta = document.createElement("div");
+                tarjeta.className = "kpi";
+                tarjeta.innerHTML = '<div class="kpi-icono ' + k.clase + '">' + iconoSvg(k.icono) + '</div>'
+                    + '<div><div class="kpi-etiqueta"></div><div class="kpi-valor"></div><div class="kpi-nota"></div></div>';
+                tarjeta.querySelector(".kpi-etiqueta").textContent = k.etiqueta;
+                tarjeta.querySelector(".kpi-valor").textContent = k.valor;
+                tarjeta.querySelector(".kpi-nota").textContent = k.nota;
+                contenedor.appendChild(tarjeta);
+            });
+        }
+
+        // ---------- Pedidos recientes ----------
+        const ESTILO_ESTADO = {
+            CREADO: ["Creado", "info", "caja"],
+            CONFIRMADO: ["Confirmado", "info", "check"],
+            EN_PREPARACION: ["En preparación", "warn", "reloj"],
+            LISTO: ["Listo", "violeta", "caja"],
+            EN_CAMINO: ["En camino", "violeta", "camion"],
+            ENTREGADO: ["Entregado", "ok", "check"],
+            CANCELADO: ["Cancelado", "bad", "caja"],
+            RECHAZADO: ["Rechazado", "bad", "caja"]
+        };
+
+        const COLORES_ICONO = {
+            info: ["#e8efff", "#3453e6"], warn: ["#fff2d6", "#a8680b"],
+            violeta: ["#efe9ff", "#6a45f0"], ok: ["#e4f6ec", "#14804a"], bad: ["#ffe6ef", "#d6336c"]
+        };
+
+        function etiquetaDeEstado(estado) {
+            const datos = ESTILO_ESTADO[estado] || [estado, "info", "caja"];
+            const marca = document.createElement("span");
+            marca.className = "etiqueta etiqueta-" + datos[1];
+            marca.textContent = datos[0];
+            return marca;
+        }
+
+        function pintarRecientes(pedidos) {
+            const lista = document.getElementById("listaRecientes");
+            lista.replaceChildren();
+            const recientes = pedidos.slice().sort(function(a, b) { return b.id - a.id; }).slice(0, 5);
+
+            if (recientes.length === 0) {
+                const vacio = document.createElement("li");
+                vacio.className = "vacio";
+                vacio.style.display = "block";
+                vacio.textContent = "Todavía no hay pedidos para mostrar.";
+                lista.appendChild(vacio);
+                return;
+            }
+
+            recientes.forEach(function(pedido) {
+                const datos = ESTILO_ESTADO[pedido.estado] || ["", "info", "caja"];
+                const colores = COLORES_ICONO[datos[1]];
+                const fila = document.createElement("li");
+
+                const icono = document.createElement("div");
+                icono.className = "reciente-icono";
+                icono.style.background = colores[0];
+                icono.style.color = colores[1];
+                icono.innerHTML = iconoSvg(datos[2]);
+
+                const texto = document.createElement("div");
+                texto.className = "reciente-texto";
+                const titulo = document.createElement("strong");
+                titulo.textContent = "#" + pedido.id + " · " + (pedido.descripcion || "");
+                const detalle = document.createElement("span");
+                detalle.textContent = pedido.direccionEntrega || "";
+                texto.appendChild(titulo);
+                texto.appendChild(detalle);
+
+                fila.appendChild(icono);
+                fila.appendChild(texto);
+                fila.appendChild(etiquetaDeEstado(pedido.estado));
+                lista.appendChild(fila);
+            });
+        }
+
+        // ---------- Mapa (Google Maps si hay clave; si no, mapa de referencia) ----------
+        const ESTILO_MAPA = [
+            { featureType: "poi", stylers: [{ visibility: "off" }] },
+            { featureType: "transit", stylers: [{ visibility: "off" }] },
+            { featureType: "water", elementType: "geometry", stylers: [{ color: "#cfe0ff" }] },
+            { featureType: "landscape", elementType: "geometry", stylers: [{ color: "#f1f3fb" }] },
+            { featureType: "road", elementType: "geometry", stylers: [{ color: "#ffffff" }] },
+            { elementType: "labels.text.fill", stylers: [{ color: "#8a90a8" }] }
+        ];
+
+        let promesaGoogleMaps = null;
+        let mapaGoogle = null;
+        let rutaGoogle = null;
+        let marcadoresGoogle = [];
+
+        function avisoMapa(texto) {
+            document.getElementById("mapaAviso").textContent = texto || "";
+        }
+
+        function mostrarMapaDemo() {
+            const caja = document.getElementById("mapaCaja");
+            caja.classList.remove("con-google");
+            caja.classList.remove("con-leaflet");
+        }
+
+        function tieneCoordenadasDeEntrega(pedido) {
+            return pedido.latitudEntrega != null && pedido.longitudEntrega != null;
+        }
+
+        function tieneCoordenadasDeRecogida(pedido) {
+            return pedido.latitudRecogida != null && pedido.longitudRecogida != null;
+        }
+
+        // Si Google rechaza la clave, se vuelve al mapa de referencia
+        window.gm_authFailure = function() {
+            mostrarMapaDemo();
+            avisoMapa("La clave de Google Maps no es válida o no tiene permisos para este sitio.");
+        };
+
+        function cargarGoogleMaps() {
+            if (promesaGoogleMaps) {
+                return promesaGoogleMaps;
+            }
+            promesaGoogleMaps = (async function() {
+                if (window.google && window.google.maps) {
+                    return true;
+                }
+                let clave = "";
+                try {
+                    const configuracion = await pedirJSON("/api/config/mapas");
+                    clave = (configuracion && configuracion.apiKey) || "";
+                } catch (error) {
+                    return false;
+                }
+                if (!clave) {
+                    return false;
+                }
+                return await new Promise(function(resolver) {
+                    window.__mapasListo = function() { resolver(true); };
+                    const script = document.createElement("script");
+                    script.src = "https://maps.googleapis.com/maps/api/js?key="
+                        + encodeURIComponent(clave) + "&callback=__mapasListo";
+                    script.async = true;
+                    script.onerror = function() { resolver(false); };
+                    document.head.appendChild(script);
+                });
+            })();
+            return promesaGoogleMaps;
+        }
+
+        function geocodificar(texto) {
+            return new Promise(function(resolver, rechazar) {
+                new google.maps.Geocoder().geocode({ address: texto + ", Guatemala" }, function(resultados, estado) {
+                    if (estado === "OK" && resultados && resultados[0]) {
+                        resolver(resultados[0].geometry.location);
+                    } else {
+                        rechazar(new Error("No se encontró la dirección: " + texto + " (" + estado + ")"));
+                    }
+                });
+            });
+        }
+
+        function trazarRuta(origen, destino) {
+            return new Promise(function(resolver, rechazar) {
+                new google.maps.DirectionsService().route({
+                    origin: origen,
+                    destination: destino,
+                    travelMode: google.maps.TravelMode.DRIVING
+                }, function(resultado, estado) {
+                    if (estado === "OK") {
+                        resolver(resultado);
+                    } else {
+                        rechazar(new Error("No se pudo trazar la ruta (" + estado + ")"));
+                    }
+                });
+            });
+        }
+
+        async function dibujarPedidoEnGoogle(pedido) {
+            let destino;
+            let origen = null;
+
+            if (tieneCoordenadasDeEntrega(pedido)) {
+                destino = new google.maps.LatLng(pedido.latitudEntrega, pedido.longitudEntrega);
+            } else {
+                destino = await geocodificar(pedido.direccionEntrega);
+            }
+
+            if (tieneCoordenadasDeRecogida(pedido)) {
+                origen = new google.maps.LatLng(pedido.latitudRecogida, pedido.longitudRecogida);
+            } else {
+                try {
+                    origen = await geocodificar(pedido.direccionRecogida);
+                } catch (error) {
+                    origen = null; // por ejemplo "Comercio: Nombre", que no es una dirección real
+                }
+            }
+
+            if (!mapaGoogle) {
+                mapaGoogle = new google.maps.Map(document.getElementById("mapa"), {
+                    center: destino,
+                    zoom: 14,
+                    disableDefaultUI: true,
+                    zoomControl: true,
+                    styles: ESTILO_MAPA
+                });
+            }
+
+            marcadoresGoogle.forEach(function(marcador) { marcador.setMap(null); });
+            marcadoresGoogle = [];
+            if (rutaGoogle) {
+                rutaGoogle.setMap(null);
+            }
+
+            document.getElementById("mapaCaja").classList.add("con-google");
+            google.maps.event.trigger(mapaGoogle, "resize");
+
+            marcadoresGoogle.push(new google.maps.Marker({ position: destino, map: mapaGoogle, title: "Entrega" }));
+
+            if (origen) {
+                try {
+                    const resultado = await trazarRuta(origen, destino);
+                    if (!rutaGoogle) {
+                        rutaGoogle = new google.maps.DirectionsRenderer({
+                            suppressMarkers: false,
+                            polylineOptions: { strokeColor: "#4f6bff", strokeWeight: 5, strokeOpacity: 0.9 }
+                        });
+                    }
+                    rutaGoogle.setMap(mapaGoogle);
+                    rutaGoogle.setDirections(resultado);
+                    return;
+                } catch (error) {
+                    console.warn(error);
+                    marcadoresGoogle.push(new google.maps.Marker({ position: origen, map: mapaGoogle, title: "Recogida" }));
+                    const limites = new google.maps.LatLngBounds();
+                    limites.extend(origen);
+                    limites.extend(destino);
+                    mapaGoogle.fitBounds(limites);
+                    return;
+                }
+            }
+            mapaGoogle.setCenter(destino);
+            mapaGoogle.setZoom(15);
+        }
+
+        let mapaLeaflet = null;
+        let capaLeaflet = null;
+
+        // Sin clave de Google: se dibujan en OpenStreetMap las ubicaciones guardadas del pedido
+        function dibujarPedidoEnLeaflet(pedido) {
+            if (!window.L || !tieneCoordenadasDeEntrega(pedido)) {
+                return false;
+            }
+            try {
+                const caja = document.getElementById("mapaCaja");
+                caja.classList.remove("con-google");
+                caja.classList.add("con-leaflet");
+
+                if (!mapaLeaflet) {
+                    mapaLeaflet = L.map("mapaLeaflet");
+                    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                        maxZoom: 19,
+                        attribution: '&copy; OpenStreetMap contributors'
+                    }).addTo(mapaLeaflet);
+                    capaLeaflet = L.layerGroup().addTo(mapaLeaflet);
+                }
+                capaLeaflet.clearLayers();
+
+                const entrega = [pedido.latitudEntrega, pedido.longitudEntrega];
+                const puntos = [entrega];
+                L.circleMarker(entrega, {
+                    radius: 9, color: "#ffffff", weight: 3, fillColor: "#7a5cff", fillOpacity: 1
+                }).addTo(capaLeaflet);
+
+                if (tieneCoordenadasDeRecogida(pedido)) {
+                    const recogida = [pedido.latitudRecogida, pedido.longitudRecogida];
+                    puntos.unshift(recogida);
+                    L.polyline([recogida, entrega], { color: "#4f6bff", weight: 5, opacity: 0.9 }).addTo(capaLeaflet);
+                    L.circleMarker(recogida, {
+                        radius: 9, color: "#ffffff", weight: 3, fillColor: "#3b6bff", fillOpacity: 1
+                    }).addTo(capaLeaflet);
+                }
+
+                mapaLeaflet.invalidateSize();
+                if (puntos.length > 1) {
+                    mapaLeaflet.fitBounds(puntos, { padding: [40, 40] });
+                } else {
+                    mapaLeaflet.setView(entrega, 15);
+                }
+                return true;
+            } catch (error) {
+                console.warn(error);
+                return false;
+            }
+        }
+
+        function elegirPedidoParaMapa(pedidos) {
+            const ordenados = pedidos.slice().sort(function(a, b) { return b.id - a.id; });
+            return ordenados.find(function(p) { return p.estado === "EN_CAMINO"; })
+                || ordenados.find(function(p) { return ESTADOS_EN_CURSO.indexOf(p.estado) >= 0; })
+                || ordenados[0]
+                || null;
+        }
+
+        function pintarTarjetaMapa(pedido) {
+            const info = document.getElementById("mapaInfo");
+            info.replaceChildren();
+            if (!pedido) {
+                info.textContent = "Sin pedidos por mostrar";
+                return;
+            }
+            const fila = document.createElement("div");
+            fila.className = "mapa-info-fila";
+            const titulo = document.createElement("strong");
+            titulo.textContent = "Pedido #" + pedido.id;
+            fila.appendChild(titulo);
+            fila.appendChild(etiquetaDeEstado(pedido.estado));
+            const direccion = document.createElement("small");
+            direccion.textContent = pedido.direccionEntrega || "";
+            info.appendChild(fila);
+            info.appendChild(direccion);
+        }
+
+        async function pintarMapa(pedidos) {
+            const pedido = elegirPedidoParaMapa(pedidos);
+            pintarTarjetaMapa(pedido);
+            avisoMapa("");
+
+            const hayGoogle = await cargarGoogleMaps();
+
+            if (hayGoogle && pedido) {
+                try {
+                    await dibujarPedidoEnGoogle(pedido);
+                    return;
+                } catch (error) {
+                    console.warn(error);
+                }
+            }
+
+            if (pedido && dibujarPedidoEnLeaflet(pedido)) {
+                avisoMapa("Ubicaciones guardadas del pedido (OpenStreetMap). Con la clave de Google Maps se muestra la ruta de Google.");
+                return;
+            }
+
+            mostrarMapaDemo();
+            if (!pedido) {
+                return;
+            }
+            avisoMapa(hayGoogle
+                ? "No se pudo ubicar este pedido en el mapa."
+                : "Vista de referencia. Elige la recogida y entrega en el mapa al crear un pedido para ver su ruta aquí.");
+        }
+
+        // ---------- Carga del tablero ----------
+        async function obtenerPedidosDelRol() {
+            const id = encodeURIComponent(idSesion());
+            switch (ROL_SESION) {
+                case "CLIENTE": return await pedirJSON("/api/pedidos/cliente/" + id);
+                case "COMERCIO": return await pedirJSON("/api/pedidos/comercio/" + id);
+                case "REPARTIDOR": return await pedirJSON("/api/pedidos/repartidor/" + id);
+                default: return await pedirJSON("/api/pedidos");
+            }
+        }
+
+        async function cargarDashboard() {
+            try {
+                const pedidos = (await obtenerPedidosDelRol()) || [];
+                pintarIndicadores(pedidos);
+                pintarRecientes(pedidos);
+                await pintarMapa(pedidos);
+            } catch (error) {
+                console.error(error);
+                avisoMapa("No se pudo cargar la información del tablero.");
+            }
+        }
+
+        function iniciarPanel() {
+            if (!sessionStorage.getItem("rol")) {
+                return;
+            }
+            SALUDO_INICIAL = document.getElementById("saludoUsuario").textContent;
+
+            const iniciales = (sessionStorage.getItem("nombreUsuario") || "D")
+                .trim().split(/\s+/).slice(0, 2)
+                .map(function(parte) { return parte.charAt(0).toUpperCase(); }).join("");
+            document.getElementById("avatarUsuario").textContent = iniciales || "D";
+
+            construirMenu();
+            construirAccionSuperior();
+
+            new MutationObserver(sincronizarEstado).observe(
+                document.querySelector(".contenedor"),
+                { attributes: true, attributeFilter: ["style"], subtree: true });
+
+            sincronizarEstado();
+            cargarDashboard();
+        }
+
+        iniciarPanel();
+
 
         function cerrarSesion() {
             sessionStorage.clear();
