@@ -14,6 +14,7 @@ import data.dfast.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Map;
 
 import java.util.Optional;
 
@@ -36,9 +37,13 @@ public class AuthController {
 
             if (usuario.getPassword().equals(request.getPassword())) {
                 return ResponseEntity.ok(
-                    "Login exitoso. Bienvenido "
-                    + usuario.getNombre()
-                    + " (" + usuario.getRol() + ")"
+                    Map.of(
+                        "mensaje", "Login exitoso",
+                        "id", usuario.getId(),
+                        "nombre", usuario.getNombre(),
+                        "correo", usuario.getCorreo(),
+                        "rol", usuario.getRol()
+                    )
                 );
             }
         }
